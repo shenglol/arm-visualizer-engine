@@ -1,0 +1,37 @@
+{
+  "name": "arm-template-engine",
+  "version": "0.0.0",
+  "description": "arm-template-engine",
+  "license": "MIT",
+  "repository": "",
+  "author": "",
+  "keywords": [
+    ""
+  ],
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "test": "gulp test"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "del": "2.0.2",
+    "dotbin": "^1.0",
+    "dts-generator": "^1.7",
+    "gulp": "^3.9.0",
+    "gulp-help": "^1.6.0",
+    "gulp-inject": "3.0.0",
+    "gulp-jasmine": "^2.0.1",
+    "gulp-sequence": "0.4.1",
+    "gulp-tsconfig-files": "0.0.2",
+    "gulp-tslint": "^3.1",
+    "jasmine": "^2.3.1",
+    "tslint": "^3.5",
+    "typescript": "^1.8"
+  },
+  "engines": {
+    "node": ">=2.0.0"
+  },
+  "typings": "./lib/index.d.ts"
+}

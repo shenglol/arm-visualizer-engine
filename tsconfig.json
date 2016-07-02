@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "target": "es5",
+    "moduleResolution": "node",
+    "noImplicitAny": true,
+    "outDir": "./lib",
+    "preserveConstEnums": true,
+    "removeComments": true
+  },
+  "filesGlob": [
+    "src/**/*.ts",
+    "test/**/*.ts"
+  ],
+  "files": [
+    "src\\greeter.ts",
+    "test\\greeter.spec.ts"
+  ]
+}
