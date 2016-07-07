@@ -13,7 +13,10 @@
     "test/**/*.ts"
   ],
   "files": [
+    "src\\constants\\expression-errors.ts",
     "src\\expressions\\expression-base.ts",
-    "test\\expressions\\expression-base.spec.ts"
+    "src\\expressions\\string\\base64-expression.ts",
+    "test\\expressions\\expression-base.spec.ts",
+    "test\\expressions\\string\\base64-expression.spec.ts"
   ]
 }
