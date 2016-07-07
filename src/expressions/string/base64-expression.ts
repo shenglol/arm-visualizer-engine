@@ -16,7 +16,7 @@ export class Base64Expression extends ExpressionBase {
     }
 
     let rawString: string = this._operands[0] instanceof ExpressionBase
-      ? (<ExpressionBase>this._operands[0]).evaluate()
+      ? <string>(<ExpressionBase>this._operands[0]).evaluate()
       : <string>this._operands[0];
 
     return new Buffer(rawString).toString('base64');

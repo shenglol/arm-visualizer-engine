@@ -3,6 +3,7 @@
 import { ConcatExpression } from '../../../src/expressions/string/concat-expression';
 
 describe('ConcatExpression', () => {
+
   it('Should combine multiple strings', () => {
     let exp = new ConcatExpression();
     exp.operands.push('foo');
@@ -23,4 +24,5 @@ describe('ConcatExpression', () => {
 
     expect(exp.evaluate()).toEqual('foo bar');
   });
+
 });

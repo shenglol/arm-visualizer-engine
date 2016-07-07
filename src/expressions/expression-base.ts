@@ -4,7 +4,7 @@
 export interface Expression {
   operands: (Expression | string)[];
   properties: (Expression | string)[];
-  evaluate(): string;
+  evaluate(): string | Object | any[];
 }
 
 /**
@@ -22,7 +22,7 @@ export abstract class ExpressionBase implements Expression {
     return this._properties;
   }
 
-  abstract evaluate(): string;
+  abstract evaluate(): string | Object | any[];
 
   toString(): string {
     let className = <string>(<any>this.constructor).name;
