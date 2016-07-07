@@ -13,7 +13,7 @@
     "test/**/*.ts"
   ],
   "files": [
-    "src\\greeter.ts",
-    "test\\greeter.spec.ts"
+    "src\\expressions\\expression-base.ts",
+    "test\\expressions\\expression-base.spec.ts"
   ]
 }
