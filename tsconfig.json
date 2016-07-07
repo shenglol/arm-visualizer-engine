@@ -16,7 +16,9 @@
     "src\\constants\\expression-errors.ts",
     "src\\expressions\\expression-base.ts",
     "src\\expressions\\string\\base64-expression.ts",
+    "src\\expressions\\string\\concat-expression.ts",
     "test\\expressions\\expression-base.spec.ts",
-    "test\\expressions\\string\\base64-expression.spec.ts"
+    "test\\expressions\\string\\base64-expression.spec.ts",
+    "test\\expressions\\string\\concat-expression.spec.ts"
   ]
 }
