@@ -1,6 +1,7 @@
 import * as Expressions from './expressions';
 import * as ExpressionErrors from '../constants/expression-errors';
-import { Expression } from './expression-base';
+import { ExpressionUtils } from './expression-utils';
+import { Expression, ExpressionTypes } from './expression-base';
 
 const DOT = '.';
 const SPACE = ' ';
@@ -51,9 +52,12 @@ export class ExpressionBuilder {
 
         case COMMA:
           if (count === 0) {
-            buffer = buffer.trim();
-            operands.push(this.isExpression(buffer)
-              ? this.buildExpression(buffer) : this.removeQuotes(buffer));
+            buffer = ExpressionUtils.truncate(buffer);
+            if (ExpressionUtils.getType(buffer) === ExpressionTypes.Expression) {
+              operands.push(this.buildExpression(buffer));
+            } else {
+              operands.push(buffer);
+            }
             buffer = '';
           } else {
             buffer += ch;
@@ -67,9 +71,12 @@ export class ExpressionBuilder {
     }
 
     if (buffer.length > 0) {
-      buffer = buffer.trim();
-      operands.push(this.isExpression(buffer)
-        ? this.buildExpression(buffer) : this.removeQuotes(buffer));
+      buffer = ExpressionUtils.truncate(buffer);
+      if (ExpressionUtils.getType(buffer) === ExpressionTypes.Expression) {
+        operands.push(this.buildExpression(buffer));
+      } else {
+        operands.push(buffer);
+      }
     }
 
     return operands;
@@ -168,13 +175,5 @@ export class ExpressionBuilder {
     let propsSource = source.substring(closedIndex + 1);
 
     return propsSource ? propsSource : '';
-  }
-
-  private isExpression(operand: string) {
-    return operand.indexOf('(') > -1;
-  }
-
-  private removeQuotes(operand: string) {
-    return operand.substr(1, operand.length - 2);
   }
 }

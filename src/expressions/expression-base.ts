@@ -1,4 +1,13 @@
 /**
+ * Expression types enum.
+ */
+export enum ExpressionTypes {
+  Expression,
+  String,
+  Number,
+}
+
+/**
  * ARM template expression interface.
  */
 export interface Expression {
