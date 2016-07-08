@@ -2,6 +2,7 @@
  * ARM template expression interface.
  */
 export interface Expression {
+
   operands: (Expression | string)[];
   properties: (Expression | string)[];
   evaluate(): string | Object | any[];
@@ -18,8 +19,16 @@ export abstract class ExpressionBase implements Expression {
     return this._operands;
   }
 
+  set operands(operands: (Expression | string)[]) {
+    this._operands = operands;
+  }
+
   get properties(): (Expression | string)[] {
     return this._properties;
+  }
+
+  set properties(properties: (Expression | string)[]) {
+    this._properties = properties;
   }
 
   abstract evaluate(): string | Object | any[];
@@ -33,7 +42,12 @@ export abstract class ExpressionBase implements Expression {
       expString += typeof operand === 'string' ? "'" + operand + "'" : operand.toString();
       expString += ', ';
     }
-    expString = expString.substr(0, expString.length - 2) + ')';
+
+    if (expString[expString.length - 1] === '(') {
+      expString += ')';
+    } else {
+      expString = expString.substr(0, expString.length - 2) + ')';
+    }
 
     for (let property of this._properties) {
       expString += typeof property === 'string' ? '.' + property : '[' + property.toString() + ']';
