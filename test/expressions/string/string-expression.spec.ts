@@ -1,7 +1,7 @@
 /// <reference path='../../../typings/index.d.ts' />
 
 import * as ExpressionErrors from '../../../src/constants/expression-errors';
-import { ExpressionBase } from '../../../src/expressions/expression-base';
+import { Expression, ExpressionBase } from '../../../src/expressions/expression-base';
 import { StringExpression } from '../../../src/expressions/string/string-expression';
 
 class ObjectExpression extends ExpressionBase {
@@ -22,13 +22,13 @@ class ArrayExpression extends ExpressionBase {
 describe('StringExpression', () => {
 
   it('Should throw no operand specified exception', () => {
-    let exp = new StringExpression();
+    let exp: Expression = new StringExpression();
 
     expect(() => { exp.evaluate(); }).toThrowError(ExpressionErrors.NO_OPERAND);
   });
 
   it('Should throw too many operands specified exception', () => {
-    let exp = new StringExpression();
+    let exp: Expression = new StringExpression();
     exp.operands.push('foo');
     exp.operands.push('bar');
 
@@ -37,7 +37,7 @@ describe('StringExpression', () => {
 
   it('Should convert a string to a string', () => {
     let valueToConvert = 'the quick fox jumps over the lazy brown dog';
-    let exp = new StringExpression();
+    let exp: Expression = new StringExpression();
     exp.operands.push(valueToConvert);
 
     let result = exp.evaluate();
@@ -46,8 +46,8 @@ describe('StringExpression', () => {
   });
 
   it('Should convert an object to a string', () => {
-    let exp = new StringExpression();
-    let operand = new ObjectExpression();
+    let exp: Expression = new StringExpression();
+    let operand: Expression = new ObjectExpression();
     exp.operands.push(operand);
 
     let result = exp.evaluate();
@@ -56,8 +56,8 @@ describe('StringExpression', () => {
   });
 
   it('Should convert an array to a string', () => {
-    let exp = new StringExpression();
-    let operand = new ArrayExpression();
+    let exp: Expression = new StringExpression();
+    let operand: Expression = new ArrayExpression();
     exp.operands.push(operand);
 
     let result = exp.evaluate();

@@ -2,7 +2,6 @@
  * ARM template expression interface.
  */
 export interface Expression {
-
   operands: (Expression | string)[];
   properties: (Expression | string)[];
   evaluate(): string | Object | any[];

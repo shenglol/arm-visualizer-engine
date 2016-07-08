@@ -1,7 +1,7 @@
 /// <reference path='../../../typings/index.d.ts' />
 
 import * as ExpressionErrors from '../../constants/expression-errors';
-import { ExpressionBase } from '../expression-base';
+import { Expression, ExpressionBase } from '../expression-base';
 
 /**
  * Combines multiple values and returns the concatenated result.
@@ -16,7 +16,7 @@ export class Base64Expression extends ExpressionBase {
     }
 
     let rawString: string = this._operands[0] instanceof ExpressionBase
-      ? <string>(<ExpressionBase>this._operands[0]).evaluate()
+      ? <string>(<Expression>this._operands[0]).evaluate()
       : <string>this._operands[0];
 
     return new Buffer(rawString).toString('base64');

@@ -1,6 +1,6 @@
 /// <reference path='../../typings/index.d.ts' />
 
-import { ExpressionBase } from '../../src/expressions/expression-base';
+import { Expression, ExpressionBase } from '../../src/expressions/expression-base';
 
 class MockExpression extends ExpressionBase {
   evaluate(): string {
@@ -11,7 +11,7 @@ class MockExpression extends ExpressionBase {
 describe('ConcatExpression', () => {
 
   it('Should convert simple expression to string', () => {
-    let exp = new MockExpression();
+    let exp: Expression = new MockExpression();
     exp.operands.push('foo');
     exp.operands.push(' ');
     exp.operands.push('bar');
@@ -20,11 +20,11 @@ describe('ConcatExpression', () => {
   });
 
   it('Should convert nested expression to string', () => {
-    let operand = new MockExpression();
+    let operand: Expression = new MockExpression();
     operand.operands.push(' ');
     operand.operands.push('bar');
 
-    let exp = new MockExpression();
+    let exp: Expression = new MockExpression();
     exp.operands.push('foo');
     exp.operands.push(operand);
 
@@ -32,7 +32,7 @@ describe('ConcatExpression', () => {
   });
 
   it('Should convert simple expression with properties to string', () => {
-    let exp = new MockExpression();
+    let exp: Expression = new MockExpression();
     exp.operands.push('foo');
     exp.properties.push('a');
     exp.properties.push('b');
@@ -41,10 +41,10 @@ describe('ConcatExpression', () => {
   });
 
   it ('Should convert expression with nested properties to string', () => {
-    let prop = new MockExpression();
+    let prop: Expression = new MockExpression();
     prop.operands.push('bar');
 
-    let exp = new MockExpression();
+    let exp: Expression = new MockExpression();
     exp.operands.push('foo');
     exp.properties.push(prop);
     exp.properties.push('a');
@@ -53,21 +53,21 @@ describe('ConcatExpression', () => {
   });
 
   it ('Should convert nested expression with nested properties to string', () => {
-    let nestedProp = new MockExpression();
+    let nestedProp: Expression = new MockExpression();
     nestedProp.operands.push('foo');
     nestedProp.operands.push('bar');
 
-    let operand = new MockExpression();
+    let operand: Expression = new MockExpression();
     operand.operands.push('b');
     operand.operands.push('c');
     operand.properties.push('m');
     operand.properties.push(nestedProp);
 
-    let prop = new MockExpression();
+    let prop: Expression = new MockExpression();
     prop.operands.push('x');
     prop.operands.push('y');
 
-    let exp = new MockExpression();
+    let exp: Expression = new MockExpression();
     exp.operands.push('a');
     exp.operands.push(operand);
     exp.properties.push(prop);

@@ -1,5 +1,5 @@
 import * as ExpressionErrors from '../../constants/expression-errors';
-import { ExpressionBase } from '../expression-base';
+import { Expression, ExpressionBase } from '../expression-base';
 
 /**
  * StringExpression
@@ -17,6 +17,6 @@ export class StringExpression extends ExpressionBase {
       return <string>this._operands[0];
     }
 
-    return JSON.stringify((<ExpressionBase>this._operands[0]).evaluate());
+    return JSON.stringify((<Expression>this._operands[0]).evaluate());
   }
 }

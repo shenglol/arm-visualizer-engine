@@ -13,26 +13,6 @@ describe('ExpressionBuilder', () => {
     builder = new ExpressionBuilder();
   });
 
-  // it('Should throw invalid expression source error', () => {
-  //   let source1 = "[concat('a', 'b', parameters('foo')name])]";
-  //   let source2 = "[concat)'a', 'b')]";
-
-  //   expect(() => {
-  //     builder.buildExpression(source1);
-  //   }).toThrowError(ExpressionErrors.INVALID_SOURCE);
-  //   expect(() => {
-  //     builder.buildExpression(source2);
-  //   }).toThrowError(ExpressionErrors.INVALID_SOURCE);
-
-  // });
-
-  // it('Should return a string for a simple source string', () => {
-  //   let source = "nic-name";
-  //   let exp = builder.buildExpression(source);
-
-  //   expect(exp).toEqual('nic-name');
-  // });
-
   it('Should build an expression with no operands', () => {
     let source = "concat()";
     let exp = builder.buildExpression(source);
