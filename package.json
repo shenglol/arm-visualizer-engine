@@ -1,12 +1,17 @@
 {
-  "name": "arm-template-engine",
+  "name": "arm-visualizer-engine",
   "version": "0.0.0",
-  "description": "arm-template-engine",
-  "license": "MIT",
+  "description": "ArmViz engine is a tool to edit and resolve Azure Resource Manager Templates",
+  "license": "Apache-2.0",
   "repository": "",
-  "author": "",
+  "author": "Shenglong Li <shenglong.li@outlook.com>",
+  "bugs": {
+    "url": "https://github.com/ytechie/AzureResourceVisualizer/issues"
+  },
+  "homepage": "https://github.com/msshli/arm-visualizer-engine/",
   "keywords": [
-    ""
+    "azure",
+    "arm"
   ],
   "files": [
     "lib"
