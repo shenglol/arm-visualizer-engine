@@ -65,11 +65,11 @@ export class ARMTemplate implements Template {
     return JSON.stringify(template, null, 2);
   }
 
-  resolveName(resource: Resource) {
+  resolveName(resource: Resource): string {
     return <string>this._parser.parse(resource.name);
   }
 
-  resolveDependencies(resource: Resource) {
+  resolveDependencies(resource: Resource): Resource[] {
     if (!resource.dependsOn) {
       return [];
     }
@@ -106,7 +106,7 @@ export class ARMTemplate implements Template {
     this._outputs = template.outputs;
   }
 
-  private findDependencies(source: string, resources: Resource[]) {
+  private findDependencies(source: string, resources: Resource[]): Resource[] {
     let dependencies: Resource[] = [];
     let dependencyId = <string>this._parser.parse(source);
 
