@@ -5,7 +5,8 @@
         "eofline": true,
         "forin": true,
         "indent": [
-            false
+            true,
+            "space"
         ],
         "label-position": true,
         "label-undefined": true,
