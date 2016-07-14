@@ -1,39 +1,39 @@
 {
-  "name": "arm-visualizer-engine",
-  "version": "0.0.1",
-  "description": "ArmViz engine is a tool to edit and resolve Azure Resource Manager Templates",
-  "license": "Apache-2.0",
-  "repository": "",
-  "author": "Shenglong Li <shenglong.li@outlook.com>",
-  "bugs": {
-    "url": "https://github.com/msshli/arm-visualizer-engine/issues"
-  },
-  "homepage": "https://github.com/msshli/arm-visualizer-engine/",
-  "keywords": [
-    "azure",
-    "arm"
-  ],
-  "files": [
-    "lib"
-  ],
-  "scripts": {
-    "gulp": "./node_modules/.bin/gulp",
-    "test": "gulp test"
-  },
-  "dependencies": {},
-  "devDependencies": {
-    "del": "^2.2.1",
-    "gulp": "github:gulpjs/gulp#4.0",
-    "gulp-typescript": "^2.13.6",
-    "gulp-tslint": "^6.0.1",
-    "gulp-tsc": "^1.2.0",
-    "gulp-load-plugins": "^1.2.4",
-    "tslint": "^3.13.0",
-    "tslint-stylish": "^2.1.0-beta",
-    "typescript": "^1.8.10"
-  },
-  "engines": {
-    "node": ">=2.0.0"
-  },
-  "typings": "./lib/index.d.ts"
+    "name": "arm-visualizer-engine",
+    "version": "0.0.1",
+    "description": "ArmViz engine is a tool to edit and resolve Azure Resource Manager Templates",
+    "license": "Apache-2.0",
+    "repository": "",
+    "author": "Shenglong Li <shenglong.li@outlook.com>",
+    "bugs": {
+        "url": "https://github.com/msshli/arm-visualizer-engine/issues"
+    },
+    "homepage": "https://github.com/msshli/arm-visualizer-engine/",
+    "keywords": [
+        "azure",
+        "arm"
+    ],
+    "files": [
+        "lib"
+    ],
+    "scripts": {
+        "gulp": "./node_modules/.bin/gulp",
+        "test": "gulp test"
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "del": "^2.2.1",
+        "gulp": "github:gulpjs/gulp#4.0",
+        "gulp-typescript": "^2.13.6",
+        "gulp-tslint": "^6.0.1",
+        "gulp-tsc": "^1.2.0",
+        "gulp-load-plugins": "^1.2.4",
+        "tslint": "^3.13.0",
+        "tslint-stylish": "^2.1.0-beta",
+        "typescript": "^1.8.10"
+    },
+    "engines": {
+        "node": ">=2.0.0"
+    },
+    "typings": "./lib/index.d.ts"
 }

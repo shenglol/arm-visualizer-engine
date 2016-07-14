@@ -8,23 +8,23 @@ var stylish = require('tslint-stylish');
 var $ = require('gulp-load-plugins')();
 
 function clean() {
-  return del([conf.paths.lib]);
+    return del([conf.paths.lib]);
 }
 
 function lint() {
-  return gulp.src(conf.paths.src)
-    .pipe($.tslint())
-    .pipe($.tslint.report(stylish, {
-      emitError: false,
-      sort: true,
-      bell: false
-    }));
+    return gulp.src(conf.paths.src)
+        .pipe($.tslint())
+        .pipe($.tslint.report(stylish, {
+            emitError: false,
+            sort: true,
+            bell: false
+        }));
 }
 
 function compile() {
-  return gulp.src([conf.paths.src, conf.paths.typings])
-    .pipe($.tsc(tsconfig.compilerOptions))
-    .pipe(gulp.dest(conf.paths.lib));
+    return gulp.src([conf.paths.src, conf.paths.typings])
+        .pipe($.tsc(tsconfig.compilerOptions))
+        .pipe(gulp.dest(conf.paths.lib));
 }
 
 gulp.task(clean);

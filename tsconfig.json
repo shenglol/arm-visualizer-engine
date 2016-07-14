@@ -1,14 +1,14 @@
 {
-  "compilerOptions": {
-    "declaration": true,
-    "target": "es5",
-    "moduleResolution": "node",
-    "noImplicitAny": true,
-    "preserveConstEnums": true,
-    "removeComments": true
-  },
-  "exclude": [
-    "node_modules",
-    "typings/globals"
-  ]
+    "compilerOptions": {
+        "declaration": true,
+        "target": "es5",
+        "moduleResolution": "node",
+        "noImplicitAny": true,
+        "preserveConstEnums": true,
+        "removeComments": true
+    },
+    "exclude": [
+        "node_modules",
+        "typings/globals"
+    ]
 }
