@@ -1,20 +1,17 @@
 {
-    "version": "0.1.0",
-    "command": "node_modules/.bin/gulp",
-    "isShellCommand": true,
-    "args": [
-        "--no-color"
-    ],
-    "tasks": [
-        {
-            "taskName": "build",
-            "args": [],
-            "isBuildCommand": true,
-            "problemMatcher": [
-                "$lessCompile",
-                "$tsc",
-                "$jshint"
-            ]
-        }
-    ]
+  "version": "0.1.0",
+  "command": "gulp",
+  "isShellCommand": true,
+  "args": [
+    "--no-color"
+  ],
+  "tasks": [
+    {
+      "taskName": "build",
+      "args": [],
+      "isBuildCommand": true,
+      "isWatching": true,
+      "problemMatcher": "$gulp-tsc"
+    }
+  ]
 }
