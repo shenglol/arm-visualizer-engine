@@ -4,37 +4,11 @@
     "target": "es5",
     "moduleResolution": "node",
     "noImplicitAny": true,
-    "outDir": "./lib",
     "preserveConstEnums": true,
     "removeComments": true
   },
-  "filesGlob": [
-    "src/**/*.ts",
-    "test/**/*.ts"
-  ],
-  "files": [
-    "src\\constants\\expression-errors.ts",
-    "src\\constants\\template-errors.ts",
-    "src\\expressions\\expression-base.ts",
-    "src\\expressions\\expression-builder.ts",
-    "src\\expressions\\expression-parser.ts",
-    "src\\expressions\\expression-utils.ts",
-    "src\\expressions\\expressions.ts",
-    "src\\template\\outputs.ts",
-    "src\\template\\parameters.ts",
-    "src\\template\\resource.ts",
-    "src\\template\\template.ts",
-    "src\\template\\variables.ts",
-    "src\\expressions\\string\\base64-expression.ts",
-    "src\\expressions\\string\\concat-expression.ts",
-    "src\\expressions\\string\\string-expression.ts",
-    "test\\expressions\\expression-base.spec.ts",
-    "test\\expressions\\expression-builder.spec.ts",
-    "test\\expressions\\expression-parser.ts",
-    "test\\expressions\\expression-utils.spec.ts",
-    "test\\template\\template.spec.ts",
-    "test\\expressions\\string\\base64-expression.spec.ts",
-    "test\\expressions\\string\\concat-expression.spec.ts",
-    "test\\expressions\\string\\string-expression.spec.ts"
+  "exclude": [
+    "node_modules",
+    "typings/globals"
   ]
 }
