@@ -123,6 +123,9 @@ npm run <release | feature | patch>
 npm publish
 ```
 
+## Changelog
+Recent changes can be viewed on the [CHANGELOG.md](CHANGELOG.md)
+
 ## License
 
 Copyright (c) Shenglong Li.
