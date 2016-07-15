@@ -1,8 +1,8 @@
 'use strict';
 
 module.exports = function (config) {
-    const tsify = require('tsify');
-    const configuration = {
+    var tsify = require('tsify');
+    var configuration = {
         basePath: '',
         autoWatch: false,
         singleRun: true,
@@ -14,9 +14,9 @@ module.exports = function (config) {
             'browserify'
         ],
         files: [
-            'typings/index.d.ts',
-            'src/**/*.ts',
-            'test/**/*.ts'
+            '../typings/index.d.ts',
+            '../src/**/*.ts',
+            '../test/**/*.ts'
         ],
         browsers: ['PhantomJS'],
         browserify: {
@@ -25,9 +25,9 @@ module.exports = function (config) {
             extensions: ['.ts', '.js']
         },
         preprocessors: {
-            'typings/index.d.ts': ['browserify'],
-            'src/**/*.ts': ['browserify'],
-            'test/**/*.ts': ['browserify']
+            '../typings/index.d.ts': ['browserify'],
+            '../src/**/*.ts': ['browserify'],
+            '../test/**/*.ts': ['browserify']
         },
         reporters: ['mocha']
     };

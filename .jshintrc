@@ -11,7 +11,8 @@
     "node": true,
     "sub": true,
     "undef": true,
-    "unused": true,
+    "esversion": 6,
+    "unused": "vars",
     "predef": [
         "describe",
         "beforeEach",
