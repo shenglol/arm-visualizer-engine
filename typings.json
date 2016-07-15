@@ -2,7 +2,8 @@
     "name": "arm-template-engine",
     "dependencies": {},
     "globalDependencies": {
-        "jasmine": "registry:dt/jasmine#2.2.0+20160621224255",
-        "node": "registry:dt/node#6.0.0+20160621231320"
+        "chai": "registry:dt/chai#3.4.0+20160601211834",
+        "mocha": "registry:dt/mocha#2.2.5+20160619032855",
+        "node": "registry:dt/node#6.0.0+20160709114037"
     }
 }

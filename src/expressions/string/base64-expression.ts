@@ -1,5 +1,3 @@
-/// <reference path='../../../typings/index.d.ts' />
-
 import * as ExpressionErrors from '../../constants/expression-errors';
 import { Expression, ExpressionBase } from '../expression-base';
 

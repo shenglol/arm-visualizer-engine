@@ -1,16 +1,16 @@
-/// <reference path='../../../typings/index.d.ts' />
-
 import { ConcatExpression } from '../../../src/expressions/string/concat-expression';
+import { expect } from 'chai';
 
 describe('ConcatExpression', () => {
+    describe('evaluate()', () => {
+        it('should combine multiple strings', () => {
+            let exp = new ConcatExpression();
 
-    it('Should combine multiple strings', () => {
-        let exp = new ConcatExpression();
-        exp.operands.push('foo');
-        exp.operands.push(' ');
-        exp.operands.push('bar');
+            exp.operands.push('foo');
+            exp.operands.push(' ');
+            exp.operands.push('bar');
 
-        expect(exp.evaluate()).toEqual('foo bar');
+            expect(exp.evaluate()).to.equal('foo bar');
+        });
     });
-
 });

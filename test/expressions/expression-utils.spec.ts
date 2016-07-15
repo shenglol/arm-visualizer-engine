@@ -1,59 +1,78 @@
-/// <reference path='../../typings/index.d.ts' />
-
 import * as ExpressionErrors from '../../src/constants/expression-errors';
 import { ExpressionUtils } from '../../src/expressions/expression-utils';
 import { ExpressionTypes } from '../../src/expressions/expression-base';
+import { expect } from 'chai';
 
 describe('ExpressionUtils', () => {
+    describe('isValid()', () => {
+        it('should return false with invalid expression source', () => {
+            let source1 = "[concat('a', 'b', parameters('foo')name])]";
+            let source2 = "[string)123))]";
+            let source3 = "[base64('foo'))]";
 
-    it('Should return false with invalid expression source', () => {
-        let source1 = "[concat('a', 'b', parameters('foo')name])]";
-        let source2 = "[string)123))]";
-        let source3 = "[base64('foo'))]";
+            expect(ExpressionUtils.isValid(source1)).to.be.false;
+            expect(ExpressionUtils.isValid(source1)).to.be.false;
+            expect(ExpressionUtils.isValid(source3)).to.be.false;
+        });
 
-        expect(ExpressionUtils.isValid(source1)).toBeFalsy();
-        expect(ExpressionUtils.isValid(source1)).toBeFalsy();
-        expect(ExpressionUtils.isValid(source3)).toBeFalsy();
+        it('should return true with valid expression source', () => {
+            let source1 = "[concat('a', 'b', parameters('foo')[name])]";
+            let source2 = "[string(123))]";
+            let source3 = "[base64('foo')]";
+
+            expect(ExpressionUtils.isValid(source1)).to.be.true;
+            expect(ExpressionUtils.isValid(source1)).to.be.true;
+            expect(ExpressionUtils.isValid(source3)).to.be.true;
+        });
     });
 
-    it('Should return true with valid expression source', () => {
-        let source1 = "[concat('a', 'b', parameters('foo')[name])]";
-        let source2 = "[string(123))]";
-        let source3 = "[base64('foo')]";
+    describe('getType()', () => {
+        it('should return Expression type when an expression source present', () => {
+            let source = "[concat('a', 'b', parameters('foo')[name])]";
 
-        expect(ExpressionUtils.isValid(source1)).toBeTruthy();
-        expect(ExpressionUtils.isValid(source1)).toBeTruthy();
-        expect(ExpressionUtils.isValid(source3)).toBeTruthy();
+            expect(ExpressionUtils.getType(source)).to.equal(ExpressionTypes.Expression);
+        });
+
+        it('should return String type when a string source present', () => {
+            let source = "'foo'";
+
+            expect(ExpressionUtils.getType(source)).to.equal(ExpressionTypes.String);
+        });
+
+        it('should return Number type when a number source present', () => {
+            let source = "123";
+
+            expect(ExpressionUtils.getType(source)).to.equal(ExpressionTypes.Number);
+        });
     });
 
-    it('Should return correct expression types', () => {
-        let source1 = "[concat('a', 'b', parameters('foo')[name])]";
-        let source2 = "'foo'";
-        let source3 = "123";
+    describe('truncate()', () => {
+        it('should not truncate an expression operand', () => {
+            let source = "concat('foo', 'bar')";
 
-        expect(ExpressionUtils.getType(source1)).toEqual(ExpressionTypes.Expression);
-        expect(ExpressionUtils.getType(source2)).toEqual(ExpressionTypes.String);
-        expect(ExpressionUtils.getType(source3)).toEqual(ExpressionTypes.Number);
+            expect(ExpressionUtils.truncate(source)).to.equal(source);
+        });
+
+        it('should not truncate a number operand', () => {
+            let source = "123";
+
+            expect(ExpressionUtils.truncate(source)).to.equal(source);
+        });
+
+        it('should truncate operand string operand', () => {
+            let source = "[concat('foo', 'bar')]";
+
+            expect(ExpressionUtils.truncate(source)).to.equal("concat('foo', 'bar')");
+        });
+
+        it('should trim spaces', () => {
+            let source1 = "   concat('foo', 'bar') ";
+            let source2 = "   123   ";
+            let source3 = "   [concat('foo', 'bar')]  ";
+
+            expect(ExpressionUtils.truncate(source1)).to.equal("concat('foo', 'bar')");
+            expect(ExpressionUtils.truncate(source2)).to.equal("123");
+            expect(ExpressionUtils.truncate(source3)).to.equal("concat('foo', 'bar')");
+        });
     });
-
-    it('Should not truncate non-truncatable strings', () => {
-        let source1 = "123";
-        let source2 = "concat('foo', 'bar')";
-
-        expect(ExpressionUtils.truncate(source1)).toEqual(source1);
-        expect(ExpressionUtils.truncate(source2)).toEqual(source2);
-    });
-
-    it('Should truncate operand string', () => {
-        let source = "'foo'";
-
-        expect(ExpressionUtils.truncate(source)).toEqual('foo');
-    });
-
-    it('Should truncate expression string', () => {
-        let source = "[concat('foo', 'bar')]";
-
-        expect(ExpressionUtils.truncate(source)).toEqual("concat('foo', 'bar')");
-    });
-
 });

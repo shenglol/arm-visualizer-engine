@@ -1,34 +1,38 @@
-/// <reference path='../../../typings/index.d.ts' />
-
 import * as ExpressionErrors from '../../../src/constants/expression-errors';
 import { Expression } from  '../../../src/expressions/expression-base';
 import { Base64Expression } from '../../../src/expressions/string/base64-expression';
+import { expect } from 'chai';
 
-describe('ConcatExpression', () => {
+describe('Base64Expression', () => {
+    let exp: Expression;
 
-    it('Should throw no operand specified exception', () => {
-        let exp: Expression = new Base64Expression();
-
-        expect(() => { exp.evaluate(); }).toThrowError(ExpressionErrors.NO_OPERAND);
+    beforeEach(() => {
+        exp = new Base64Expression();
     });
 
-    it('Should throw too many operands specified exception', () => {
-        let exp: Expression = new Base64Expression();
-        exp.operands.push('foo');
-        exp.operands.push('bar');
+    describe('evaluate()', () => {
+        it('should throw no operand specified error when no operand present', () => {
+            expect(() => {
+                exp.evaluate();
+            }).to.throw(ExpressionErrors.NO_OPERAND);
+        });
 
-        expect(() => { exp.evaluate(); }).toThrowError(ExpressionErrors.TOO_MANY_OPERANDS);
+        it('should throw too many operands specified error when more than one operand present', () => {
+            exp.operands.push('foo');
+            exp.operands.push('bar');
+
+            expect(() => {
+                exp.evaluate();
+            }).to.throw(ExpressionErrors.TOO_MANY_OPERANDS);
+        });
+
+        it('should return the base64 representation of the raw string', () => {
+            let rawString = 'the quick fox jumps over the lazy brown dog';
+            let encodedString = new Buffer(rawString).toString('base64');
+
+            exp.operands.push(rawString);
+
+            expect(exp.evaluate()).to.equal(encodedString);
+        });
     });
-
-    it('Should return the base64 representation of the raw string', () => {
-        let rawString = 'the quick fox jumps over the lazy brown dog';
-        let exp: Expression = new Base64Expression();
-        exp.operands.push(rawString);
-
-        let encodedString = new Buffer(rawString).toString('base64');
-        let result = exp.evaluate();
-
-        expect(result).toEqual(encodedString);
-    });
-
 });
