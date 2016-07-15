@@ -21,15 +21,15 @@ npm install arm-visualizer-engine --save
 ```
 
 ## Changelog
-Recent changes can be viewed on the [CHANGELOG.md](CHANGELOG.md)
+Recent changes can be viewed on the [Changelog](https://github.com/msshli/arm-visualizer-engine/blob/master/CHANGELOG.md)
 
 ## How to Contribute
-Read to contribute [CONTRIBUTING.md](CONTRIBUTING.md)
+Read to contribute [Contributing](https://github.com/msshli/arm-visualizer-engine/blob/master/CONTRIBUTING.md)
 
 [Referred via](https://github.com/joeybaker/generator-iojs)
 
 ## How to Make Pull Request
-Read to contribute [PULL_REQUEST_TEMPLATE.md](PULL_REQUEST_TEMPLATE.md)
+Read to contribute [Pull request template](https://github.com/msshli/arm-visualizer-engine/blob/master/PULL_REQUEST_TEMPLATE.md)
 
 [Referred via](https://github.com/joeybaker/generator-iojs)
 
