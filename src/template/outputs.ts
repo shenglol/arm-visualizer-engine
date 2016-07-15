@@ -1,3 +1,3 @@
 export interface Outputs {
-  [outputName: string]: string | Object;
+    [outputName: string]: string | Object;
 }

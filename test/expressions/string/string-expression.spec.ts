@@ -1,68 +1,68 @@
-/// <reference path='../../../typings/index.d.ts' />
-
 import * as ExpressionErrors from '../../../src/constants/expression-errors';
 import { Expression, ExpressionBase } from '../../../src/expressions/expression-base';
 import { StringExpression } from '../../../src/expressions/string/string-expression';
+import { expect } from 'chai';
 
 class ObjectExpression extends ExpressionBase {
-  evaluate(): Object {
-    return {
-      foo: "bar",
-      array: ["a", 1, "b", 2]
-    };
-  }
+    evaluate(): Object {
+        return {
+            foo: "bar",
+            array: ["a", 1, "b", 2]
+        };
+    }
 }
 
 class ArrayExpression extends ExpressionBase {
-  evaluate(): any[] {
-    return ['a', 1, 'b', 2, { foo: "bar"}];
-  }
+    evaluate(): any[] {
+        return ['a', 1, 'b', 2, { foo: "bar" }];
+    }
 }
 
 describe('StringExpression', () => {
+    let exp: Expression;
 
-  it('Should throw no operand specified exception', () => {
-    let exp: Expression = new StringExpression();
+    beforeEach(() => {
+        exp = new StringExpression();
+    });
 
-    expect(() => { exp.evaluate(); }).toThrowError(ExpressionErrors.NO_OPERAND);
-  });
+    describe('evaluate()', () => {
+        it('should throw no operand specified error when no operand present', () => {
+            expect(() => {
+                exp.evaluate();
+            }).to.throw(ExpressionErrors.NO_OPERAND);
+        });
 
-  it('Should throw too many operands specified exception', () => {
-    let exp: Expression = new StringExpression();
-    exp.operands.push('foo');
-    exp.operands.push('bar');
+        it('should throw too many operands specified error when more than one operand present', () => {
+            exp.operands.push('foo');
+            exp.operands.push('bar');
 
-    expect(() => { exp.evaluate(); }).toThrowError(ExpressionErrors.TOO_MANY_OPERANDS);
-  });
+            expect(() => {
+                exp.evaluate();
+            }).to.throw(ExpressionErrors.TOO_MANY_OPERANDS);
+        });
 
-  it('Should convert a string to a string', () => {
-    let valueToConvert = 'the quick fox jumps over the lazy brown dog';
-    let exp: Expression = new StringExpression();
-    exp.operands.push(valueToConvert);
+        it('should convert a string to string', () => {
+            let valueToConvert = 'the quick fox jumps over the lazy brown dog';
 
-    let result = exp.evaluate();
+            exp.operands.push(valueToConvert);
 
-    expect(result).toEqual(valueToConvert);
-  });
+            expect(exp.evaluate()).to.equal(valueToConvert);
+        });
 
-  it('Should convert an object to a string', () => {
-    let exp: Expression = new StringExpression();
-    let operand: Expression = new ObjectExpression();
-    exp.operands.push(operand);
+        it('should convert an object to string', () => {
+            let operand: Expression = new ObjectExpression();
 
-    let result = exp.evaluate();
+            exp.operands.push(operand);
 
-    expect(result).toEqual('{"foo":"bar","array":["a",1,"b",2]}');
-  });
+            expect(exp.evaluate()).to.equal('{"foo":"bar","array":["a",1,"b",2]}');
+        });
 
-  it('Should convert an array to a string', () => {
-    let exp: Expression = new StringExpression();
-    let operand: Expression = new ArrayExpression();
-    exp.operands.push(operand);
+        it('should convert an array to string', () => {
+            let operand: Expression = new ArrayExpression();
 
-    let result = exp.evaluate();
+            exp.operands.push(operand);
 
-    expect(result).toEqual('["a",1,"b",2,{"foo":"bar"}]');
-  });
-
+            expect(exp.evaluate()).to.equal('["a",1,"b",2,{"foo":"bar"}]');
+        });
+    });
 });

@@ -1,27 +1,39 @@
-# ArmViz Engine
-ArmViz engine is a tool to resolve and edit Azure Resource Manager Templates.
+# ARM Visualizer Engine
+> ARM Visualizer Engine is a tool to load, resolve and edit Azure Resource Manager Templates
 
-## Building
-Install Gulp, TypeScript, Typings and dev dependencies:
+## Table of Contents
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+
+- [Installation](#installation)
+- [Changelog](#changelog)
+- [How to Contribute](#how-to-contribute)
+- [How to Make Pull Request](#how-to-make-pull-request)
+- [License](#license)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+## Installation
 
 ```
-npm install -g gulp typescript typings
-npm install
+npm install arm-visualizer-engine --save
 ```
 
-Install types:
+## Changelog
+Recent changes can be viewed on the [CHANGELOG.md](CHANGELOG.md)
 
-```
-typings install
-```
+## How to Contribute
+Read to contribute [CONTRIBUTING.md](CONTRIBUTING.md)
 
-Use one of the following to build and test:
+[Referred via](https://github.com/joeybaker/generator-iojs)
 
-```
-gulp build           # Compiles all TypeScript source files and updates module references
-gulp clean           # Cleans the generated js files from lib directory
-gulp help            # Display this help text.
-gulp test            # Runs the Jasmine test specs [build]
-gulp tslint          # Lints all TypeScript source files
-gulp watch           # Watches ts source files and runs build on change
-```
+## How to Make Pull Request
+Read to contribute [PULL_REQUEST_TEMPLATE.md](PULL_REQUEST_TEMPLATE.md)
+
+[Referred via](https://github.com/joeybaker/generator-iojs)
+
+## License
+
+Copyright (c) Shenglong Li.
+This source code is licensed under the Apache-2.0 license.
