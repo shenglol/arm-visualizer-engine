@@ -47,4 +47,4 @@ function release() {
 
 gulp.task('version:patch', patch);
 gulp.task('version:feature', feature);
-gulp.task('version:release', feature);
+gulp.task('version:release', release);
