@@ -49,7 +49,7 @@ export class ARMTemplate implements Template {
 
     load(data: string) {
         this.setContent(data);
-        this._parser = new ExpressionParser();
+        this._parser = new ExpressionParser(this);
     }
 
     toString(): string {

@@ -1,22 +1,24 @@
 import * as ExpressionErrors from '../constants/expression-errors';
 import { ExpressionUtils } from './expression-utils';
 import { ExpressionBuilder } from './expression-builder';
-import { ExpressionBase, ExpressionTypes } from './expression-base';
+import { Expression, ExpressionTypes } from './expression-base';
+import { Contextual, ExpressionContext } from './expression-context';
+import { Template } from '../template/template';
 
 export class ExpressionParser {
-    private _expBuilder: ExpressionBuilder;
-    private _parseCache: { [source: string]: string | Object | any[] };
+    private expBuilder: ExpressionBuilder;
+    private parseCache: { [source: string]: string | Object | any[] };
 
-    constructor() {
-        this._expBuilder = new ExpressionBuilder();
-        this._parseCache = {};
+    constructor(template: Template) {
+        this.expBuilder = new ExpressionBuilder(template);
+        this.parseCache = {};
     }
 
     parse(source: string): string | Object | any[] {
         source = ExpressionUtils.truncate(source);
 
-        if (this._parseCache[source]) {
-            return this._parseCache[source];
+        if (this.parseCache[source]) {
+            return this.parseCache[source];
         }
 
         if (!ExpressionUtils.isValid(source)) {
@@ -27,8 +29,8 @@ export class ExpressionParser {
             return source;
         }
 
-        let exp = this._expBuilder.buildExpression(source);
-        let result = this._parseCache[source] = exp.evaluate();
+        let exp = this.expBuilder.buildExpression(source);
+        let result = this.parseCache[source] = exp.evaluate();
 
         return result;
     }

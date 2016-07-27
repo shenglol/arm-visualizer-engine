@@ -1,4 +1,6 @@
-export interface Parameters {
+import { ExpressionContext } from '../expressions/expression-context';
+
+export interface Parameters extends ExpressionContext {
     [parameterName: string]: {
         type: string;
         defaultValue?: string | number | boolean | Object | any[];

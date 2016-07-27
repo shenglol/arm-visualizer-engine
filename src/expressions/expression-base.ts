@@ -1,3 +1,5 @@
+import { ExpressionContext } from './expression-context';
+
 /**
  * Expression types enum.
  */
@@ -13,6 +15,7 @@ export enum ExpressionTypes {
 export interface Expression {
     operands: (Expression | string)[];
     properties: (Expression | string)[];
+    context?: ExpressionContext;
     evaluate(): string | Object | any[];
 }
 

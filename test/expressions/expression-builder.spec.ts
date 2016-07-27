@@ -2,13 +2,23 @@ import * as ExpressionErrors from '../../src/constants/expression-errors';
 import * as Expressions from '../../src/expressions/expressions';
 import { Expression, ExpressionBase } from  '../../src/expressions/expression-base';
 import { ExpressionBuilder } from '../../src/expressions/expression-builder';
+import { Template } from '../../src/template/template';
 import { expect } from 'chai';
 
 describe('ExpressionBuilder', () => {
     let builder: ExpressionBuilder;
+    let template: Template;
 
     before(() => {
-        builder = new ExpressionBuilder();
+        template = {
+            $schema: '',
+            contentVersion: '',
+            variables: {
+                'foo': 'bar'
+            },
+            resources: []
+        };
+        builder = new ExpressionBuilder(template);
     });
 
     describe('buildExpression()', () => {
@@ -54,5 +64,12 @@ describe('ExpressionBuilder', () => {
 
             expect(exp.toString()).to.equal(source);
         });
+
+        it('should build expression with context', () => {
+            let source = "variables('foo')";
+            let exp = builder.buildExpression(source);
+
+            expect(exp.context).to.equal(template.variables);
+        })
     });
 });
