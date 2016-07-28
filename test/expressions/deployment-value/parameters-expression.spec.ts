@@ -4,7 +4,7 @@ import { ParametersExpression } from '../../../src/index';
 import { ARMTemplate } from '../../../src/template/template';
 import { expect } from 'chai';
 
-describe('VariablesExpression', () => {
+describe('ParametersExpression', () => {
     let exp: Expression;
     let template: ARMTemplate;
 
