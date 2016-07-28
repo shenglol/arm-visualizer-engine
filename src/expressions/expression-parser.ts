@@ -2,14 +2,13 @@ import * as ExpressionErrors from '../constants/expression-errors';
 import { ExpressionUtils } from './expression-utils';
 import { ExpressionBuilder } from './expression-builder';
 import { Expression, ExpressionTypes } from './expression-base';
-import { Contextual, ExpressionContext } from './expression-context';
-import { Template } from '../template/template';
+import { ARMTemplate } from '../template/template';
 
 export class ExpressionParser {
     private expBuilder: ExpressionBuilder;
     private parseCache: { [source: string]: string | Object | any[] };
 
-    constructor(template: Template) {
+    constructor(template: ARMTemplate) {
         this.expBuilder = new ExpressionBuilder(template);
         this.parseCache = {};
     }

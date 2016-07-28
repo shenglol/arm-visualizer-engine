@@ -47,6 +47,10 @@ export class ARMTemplate implements Template {
         return this._outputs;
     }
 
+    get parser(): ExpressionParser {
+        return this._parser;
+    }
+
     load(data: string) {
         this.setContent(data);
         this._parser = new ExpressionParser(this);

@@ -1,14 +1,17 @@
 import * as ExpressionErrors from '../../constants/expression-errors';
-import { Expression, ExpressionBase } from '../expression-base';
-import { Variables } from '../../template/Variables';
-import { Contextual } from '../expression-context';
+import { Expression, ContextualExpressionBase } from '../expression-base';
+import { Variables } from '../../template/variables';
+import { ARMTemplate } from '../../template/template';
 
 /**
  * VarialbesExpression
  */
-export class VariablesExpression extends ExpressionBase implements Contextual {
-    contextId: string = 'variables';
-    context: Variables;
+export class VariablesExpression extends ContextualExpressionBase {
+    constructor(template: ARMTemplate) {
+        super(template);
+
+        this.context = template.variables;
+    }
 
     evaluate(): string | Object | any[] {
         if (this._operands.length === 0) {
@@ -19,7 +22,7 @@ export class VariablesExpression extends ExpressionBase implements Contextual {
         }
 
         if (!this.context) {
-            throw new Error(ExpressionErrors.NO_CONTEXT + ': ' + this.contextId);
+            throw new Error(ExpressionErrors.NO_CONTEXT + ': variables');
         }
 
         let key: string = typeof this.operands[0] === 'string'
@@ -27,9 +30,16 @@ export class VariablesExpression extends ExpressionBase implements Contextual {
             : <string>(<Expression>this.operands[0]).evaluate();
 
         if (!(key in this.context)) {
-            throw new Error(ExpressionErrors.NO_KEY_FOUND + 'in ' + this.contextId + ': ' + key);
+            throw new Error(ExpressionErrors.NO_KEY_FOUND + ': ' + key);
         }
 
-        return this.context[key];
+        let value = (<Variables>this.context)[key];
+
+        // value could be another expression
+        if (typeof value === 'string') {
+            return this.parser.parse(value);
+        }
+
+        return value;
     }
 }
