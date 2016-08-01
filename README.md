@@ -1,5 +1,5 @@
-# ARM Visualizer Engine
-> ARM Visualizer Engine is a tool to load, resolve and edit Azure Resource Manager Templates
+# ARMVIZ 2.0 Engine
+> ARMVIZ 2.0 Engine is a core component for [ARMVIZ 2.0](https://github.com/msshli/arm-visualizer). It is a tool for loading, resolving and editing Azure Resource Manager Templates.
 
 ## Installation
 
