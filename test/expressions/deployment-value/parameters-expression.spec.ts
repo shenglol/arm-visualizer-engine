@@ -197,7 +197,7 @@ describe('ParametersExpression', () => {
                 "contentVersion": "",
                 "parameters": {
                     "a": {
-                        "type": "object",
+                        "type": "array",
                         "defaultValue": [
                             0,
                             1,
