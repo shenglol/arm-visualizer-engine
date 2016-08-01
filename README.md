@@ -9,7 +9,7 @@ npm install arm-visualizer-engine --save
 
 ## Examples
 
-### Loading a template
+### Load a template
 
 ```
 import { ARMTemplate } from 'arm-visualizer-engine';
