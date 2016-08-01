@@ -59,6 +59,9 @@ export abstract class ExpressionBase implements Expression {
     }
 }
 
+/**
+ * Base class for ARM template expression with context
+ */
 export abstract class ContextualExpressionBase extends ExpressionBase {
     protected context: Parameters | Variables;
     protected parser: ExpressionParser;
