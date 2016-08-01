@@ -1,35 +1,95 @@
 # ARM Visualizer Engine
 > ARM Visualizer Engine is a tool to load, resolve and edit Azure Resource Manager Templates
 
-## Table of Contents
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-
-
-- [Installation](#installation)
-- [Changelog](#changelog)
-- [How to Contribute](#how-to-contribute)
-- [How to Make Pull Request](#how-to-make-pull-request)
-- [License](#license)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
 ## Installation
 
 ```
 npm install arm-visualizer-engine --save
 ```
 
-## Changelog
-Recent changes can be viewed on the [Changelog](https://github.com/msshli/arm-visualizer-engine/blob/master/CHANGELOG.md)
+## Examples
+
+### Loading a template
+
+```
+import { ARMTemplate } from 'arm-visualizer-engine';
+
+let template = new ARMTemplate();
+template.load(`{
+    "$schema": "",
+    "contentVersion": "",
+    "parameters": {},
+    "resources": [{
+        "name": "resourceA" 
+    }]
+}`);
+
+console.log(template.resources[0]); // { "name": "resourceA" }
+```
+
+### Parse an expression
+
+
+```
+import { ARMTemplate } from 'arm-visualizer-engine';
+
+let template = new ARMTemplate();
+template.load(`{
+    "$schema": "",
+    "contentVersion": "",
+    "parameters": {
+        "username": {
+            "type": "string",
+            "defaultValue": "foo"
+        }
+    },
+    "resources": []
+}`);
+
+console.log(template.parser.parse("[parameters('username')]"));  // 'foo'
+```
+
+### Resolve dependencies
+
+```
+import { Resource, ARMTemplate } from 'arm-visualizer-engine';
+
+let template = new ARMTemplate();
+template.load(`{
+    "$schema": "",
+    "contentVersion": "",
+    "parameters": {},
+    "resources": [
+        {
+            ...,
+            name: "resourceA",
+            type: "typeA",
+            dependsOn: [
+                "[concat('typeB', 'resourceB')]"
+                "[resourceId('typeC', 'resourceC')]"
+            ]
+        },
+        {
+            ...,
+            name: "resourceB",
+            type: "typeB"
+        },
+        {
+            ...,
+            name: "resourceC",
+            type: "typeC"
+        }
+    ]
+}`);
+
+let dependencies = template.resolveDependencies(template.resources[0]);
+console.log(dependencies[0]); // resourceB
+console.log(dependencies[1]); // resourceC
+
+```
 
 ## How to Contribute
-Read to contribute [Contributing](https://github.com/msshli/arm-visualizer-engine/blob/master/CONTRIBUTING.md)
-
-[Referred via](https://github.com/joeybaker/generator-iojs)
-
-## How to Make Pull Request
-Read to contribute [Pull request template](https://github.com/msshli/arm-visualizer-engine/blob/master/PULL_REQUEST_TEMPLATE.md)
+Read [this](https://github.com/msshli/arm-visualizer-engine/blob/master/CONTRIBUTING.md) to contribute.
 
 [Referred via](https://github.com/joeybaker/generator-iojs)
 
