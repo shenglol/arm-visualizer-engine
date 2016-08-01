@@ -1,3 +1,4 @@
+import { ExpressionErrors } from '../../constants';
 import { ExpressionBase } from '../expression-base';
 
 /**
@@ -8,7 +9,11 @@ export class ConcatExpression extends ExpressionBase {
     let result = '';
 
     for (let operand of this._operands) {
-      result += typeof operand === 'string' ? operand : operand.evaluate();
+        if (typeof operand === 'number') {
+            throw new Error(ExpressionErrors.INVALID_OPERAND_TYPE);
+        } else {
+            result += typeof operand === 'string' ? operand : operand.evaluate();
+        }
     }
 
     return result;

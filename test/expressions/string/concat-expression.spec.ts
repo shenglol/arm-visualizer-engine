@@ -1,9 +1,20 @@
 import { expect } from 'chai';
 
-import { ConcatExpression } from '../../../src';
+import { ExpressionErrors, ConcatExpression } from '../../../src';
 
 describe('ConcatExpression', () => {
     describe('evaluate()', () => {
+        it ('should throw invalid operand type when operands contains number', () => {
+            let exp = new ConcatExpression();
+
+            exp.operands.push('foo');
+            exp.operands.push(25);
+
+            expect(() => {
+                exp.evaluate();
+            }).to.throw(ExpressionErrors.INVALID_OPERAND_TYPE);
+        });
+
         it('should combine multiple strings', () => {
             let exp = new ConcatExpression();
 

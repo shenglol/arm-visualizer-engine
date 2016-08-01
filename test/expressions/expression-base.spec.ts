@@ -18,9 +18,9 @@ describe('ExpressionBase', () => {
         it('should convert a simple expression to string', () => {
             exp.operands.push('foo');
             exp.operands.push(' ');
-            exp.operands.push('bar');
+            exp.operands.push(1);
 
-            expect(exp.toString()).to.equal("mock('foo', ' ', 'bar')");
+            expect(exp.toString()).to.equal("mock('foo', ' ', 1)");
         });
 
         it('should convert a nested expression to string', () => {

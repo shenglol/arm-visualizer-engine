@@ -160,5 +160,30 @@ describe('VariablesExpression', () => {
 
             expect(exp.evaluate()).to.equal('you got me!');
         });
+
+        it('should evaluate expression with complex properties when variable is an expression', () => {
+            template.load(`{
+                "$schema": "",
+                "contentVersion": "",
+                "variables": {
+                    "a": [
+                        0,
+                        1,
+                        {
+                            "b": "[concat('you', ' got', ' me!')]"
+                        }
+                    ]
+
+                },
+                "resources": []
+            }`);
+
+            exp = new VariablesExpression(template);
+            exp.operands.push('a');
+            exp.properties.push(2);
+            exp.properties.push('b');
+
+            expect(exp.evaluate()).to.equal('you got me!');
+        });
     });
 });

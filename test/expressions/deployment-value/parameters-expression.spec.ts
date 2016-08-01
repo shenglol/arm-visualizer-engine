@@ -190,5 +190,32 @@ describe('ParametersExpression', () => {
 
             expect(exp.evaluate()).to.equal('you got me!');
         });
+
+        it('should evaluate expression with complex properties when parameter is an expression', () => {
+            template.load(`{
+                "$schema": "",
+                "contentVersion": "",
+                "parameters": {
+                    "a": {
+                        "type": "object",
+                        "defaultValue": [
+                            0,
+                            1,
+                            {
+                                "c": "[concat('you', ' got', ' me!')]"
+                            }
+                        ]
+                    }
+                },
+                "resources": []
+            }`);
+
+            exp = new ParametersExpression(template);
+            exp.operands.push('a');
+            exp.properties.push(2);
+            exp.properties.push('c');
+
+            expect(exp.evaluate()).to.equal('you got me!');
+        });
     });
 });

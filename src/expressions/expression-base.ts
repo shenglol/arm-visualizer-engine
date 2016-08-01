@@ -5,35 +5,35 @@ import { Parameters, Variables, Template, ARMTemplate } from '../template';
  * ARM template expression interface.
  */
 export interface Expression {
-    operands: (Expression | string)[];
-    properties: (Expression | string)[];
-    evaluate(): string | Object | any[];
+    operands: (Expression | string | number)[];
+    properties: (Expression | string | number)[];
+    evaluate(): string | number | Object | any[];
 }
 
 /**
  * Base class for ARM template expression.
  */
 export abstract class ExpressionBase implements Expression {
-    protected _operands: (Expression | string)[] = [];
-    protected _properties: (Expression | string)[] = [];
+    protected _operands: (Expression | string | number)[] = [];
+    protected _properties: (Expression | string | number)[] = [];
 
-    get operands(): (Expression | string)[] {
+    get operands(): (Expression | string | number)[] {
         return this._operands;
     }
 
-    set operands(operands: (Expression | string)[]) {
+    set operands(operands: (Expression | string | number)[]) {
         this._operands = operands;
     }
 
-    get properties(): (Expression | string)[] {
+    get properties(): (Expression | string | number)[] {
         return this._properties;
     }
 
-    set properties(properties: (Expression | string)[]) {
+    set properties(properties: (Expression | string | number)[]) {
         this._properties = properties;
     }
 
-    abstract evaluate(): string | Object | any[];
+    abstract evaluate(): string | number | Object | any[];
 
     toString(): string {
         let className = <string>(<any>this.constructor).name;

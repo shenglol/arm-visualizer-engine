@@ -37,7 +37,8 @@ export class VariablesExpression extends ContextualExpressionBase {
 
         if (typeof value === 'object') {
             for (let prop of this.properties) {
-                let key: string = typeof prop === 'string' ? prop : <string>prop.evaluate();
+                let key = typeof prop === 'string' || typeof prop === 'number'
+                    ? prop : <string | number>prop.evaluate();
                 value = (<any>value)[key];
             }
 
