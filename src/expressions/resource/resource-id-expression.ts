@@ -14,7 +14,6 @@ export class ResourceIdExpression extends ExpressionBase {
         let resourceId = '';
 
         for (let operand of this.operands) {
-            console.log(operand);
             resourceId += '/';
             resourceId += typeof operand === 'string'
                 ? <string>operand

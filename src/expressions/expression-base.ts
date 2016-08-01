@@ -1,6 +1,5 @@
-import { ExpressionContext } from './expression-context';
 import { ExpressionParser } from './expression-parser';
-import { ARMTemplate } from '../template';
+import { Parameters, Variables, Template, ARMTemplate } from '../template';
 
 /**
  * Expression types enum.
@@ -70,12 +69,15 @@ export abstract class ExpressionBase implements Expression {
 }
 
 export abstract class ContextualExpressionBase extends ExpressionBase {
-    protected context: ExpressionContext;
+    protected context: Parameters | Variables;
     protected parser: ExpressionParser;
 
     constructor(template: ARMTemplate) {
         super();
 
         this.parser = template.parser;
+        this.setContext(template);
     }
+
+    protected abstract setContext(template: Template): void;
 }

@@ -1,5 +1,3 @@
-import { ExpressionContext } from '../expressions';
-
-export interface Variables extends ExpressionContext {
+export interface Variables {
     [variableName: string]: string | Object;
 }

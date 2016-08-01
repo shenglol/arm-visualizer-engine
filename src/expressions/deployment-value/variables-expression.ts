@@ -1,16 +1,12 @@
 import { ExpressionErrors } from '../../constants';
 import { Expression, ContextualExpressionBase } from '../expression-base';
-import { Variables, ARMTemplate } from '../../template/';
+import { Variables, Template, ARMTemplate } from '../../template/';
 
 /**
  * VarialbesExpression
  */
 export class VariablesExpression extends ContextualExpressionBase {
-    constructor(template: ARMTemplate) {
-        super(template);
-
-        this.context = template.variables;
-    }
+    protected context: Variables;
 
     evaluate(): string | Object | any[] {
         if (this._operands.length === 0) {
@@ -32,7 +28,7 @@ export class VariablesExpression extends ContextualExpressionBase {
             throw new Error(ExpressionErrors.NO_KEY_FOUND + ': ' + key);
         }
 
-        let value = (<Variables>this.context)[key];
+        let value = this.context[key];
 
         // value could be another expression
         if (typeof value === 'string') {
@@ -40,5 +36,9 @@ export class VariablesExpression extends ContextualExpressionBase {
         }
 
         return value;
+    }
+
+    protected setContext(template: Template) {
+        this.context = template.variables;
     }
 }

@@ -4,7 +4,6 @@ import {
     ExpressionErrors,
     Expression,
     ContextualExpressionBase,
-    ExpressionContext,
     ExpressionBuilder,
     ExpressionParser,
     ARMTemplate
