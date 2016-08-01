@@ -1,5 +1,5 @@
 import { ExpressionErrors } from '../constants';
-import { ExpressionTypes } from './expression-base';
+import { ExpressionTypes } from './expression-types';
 
 export class ExpressionUtils {
     // TODO: Create a validator

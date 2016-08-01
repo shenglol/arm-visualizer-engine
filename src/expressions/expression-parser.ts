@@ -1,5 +1,6 @@
 import { ExpressionErrors } from '../constants';
-import { Expression, ExpressionTypes } from './expression-base';
+import { Expression } from './expression-base';
+import { ExpressionTypes } from './expression-types';
 import { ExpressionBuilder } from './expression-builder';
 import { ExpressionUtils } from './expression-utils';
 import { ARMTemplate } from '../template';

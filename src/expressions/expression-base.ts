@@ -2,15 +2,6 @@ import { ExpressionParser } from './expression-parser';
 import { Parameters, Variables, Template, ARMTemplate } from '../template';
 
 /**
- * Expression types enum.
- */
-export enum ExpressionTypes {
-    Expression,
-    String,
-    Number,
-}
-
-/**
  * ARM template expression interface.
  */
 export interface Expression {

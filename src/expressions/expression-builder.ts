@@ -1,7 +1,8 @@
 import * as Expressions from './expressions';
 import { ExpressionErrors } from '../constants';
 import { ExpressionUtils } from './expression-utils';
-import { Expression, ExpressionTypes } from './expression-base';
+import { Expression } from './expression-base';
+import { ExpressionTypes } from './expression-types';
 import { ARMTemplate } from '../template';
 
 const DOT = '.';
