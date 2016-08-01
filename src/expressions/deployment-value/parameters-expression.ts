@@ -29,7 +29,7 @@ export class ParametersExpression extends ContextualExpressionBase {
         }
 
         let parameter = this.context[key];
-        let value: any = parameter.value || parameter.defaultValue;
+        let value = parameter.value || parameter.defaultValue;
 
         if (!value && value !== '') {
             return "parameters('" + key + "')";
@@ -42,7 +42,7 @@ export class ParametersExpression extends ContextualExpressionBase {
         if (typeof value === 'object') {
             for (let prop of this.properties) {
                 let key: string = typeof prop === 'string' ? prop : <string>prop.evaluate();
-                value = value[key];
+                value = (<any>value)[key];
             }
 
             if (typeof value === 'string') {

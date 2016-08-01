@@ -35,6 +35,19 @@ export class VariablesExpression extends ContextualExpressionBase {
             return this.parser.parse(value);
         }
 
+        if (typeof value === 'object') {
+            for (let prop of this.properties) {
+                let key: string = typeof prop === 'string' ? prop : <string>prop.evaluate();
+                value = (<any>value)[key];
+            }
+
+            if (typeof value === 'string') {
+                return this.parser.parse(value);
+            }
+
+            return value;
+        }
+
         return value;
     }
 

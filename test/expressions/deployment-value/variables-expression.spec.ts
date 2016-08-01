@@ -101,7 +101,7 @@ describe('VariablesExpression', () => {
             expect(exp.evaluate()).to.equal('c');
         });
 
-        it('should parse expression when variable value is an expression', () => {
+        it('should evaluate expression when variable value is an expression', () => {
             template.load(`{
               "$schema": "",
               "contentVersion": "",
@@ -115,6 +115,50 @@ describe('VariablesExpression', () => {
             exp.operands.push('42');
 
             expect(exp.evaluate()).to.equal('the meaning of life');
+        });
+
+        it('should evaluate expression with properties', () => {
+            template.load(`{
+              "$schema": "",
+              "contentVersion": "",
+              "variables": {
+                  "a": {
+                      "b": {
+                          "c": "you got me!"
+                      }
+                  }
+              },
+              "resources": []
+            }`);
+
+            exp = new VariablesExpression(template);
+            exp.operands.push('a');
+            exp.properties.push('b');
+            exp.properties.push('c');
+
+            expect(exp.evaluate()).to.equal('you got me!');
+        });
+
+        it('should evaluate expression with properties when variable is an expression', () => {
+            template.load(`{
+                "$schema": "",
+                "contentVersion": "",
+                "variables": {
+                    "a": {
+                        "b": {
+                            "c": "[concat('you', ' got', ' me!')]"
+                        }
+                    }
+                },
+                "resources": []
+            }`);
+
+            exp = new VariablesExpression(template);
+            exp.operands.push('a');
+            exp.properties.push('b');
+            exp.properties.push('c');
+
+            expect(exp.evaluate()).to.equal('you got me!');
         });
     });
 });
