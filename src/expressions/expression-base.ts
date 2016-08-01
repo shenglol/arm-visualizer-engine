@@ -1,6 +1,6 @@
 import { ExpressionContext } from './expression-context';
 import { ExpressionParser } from './expression-parser';
-import { ARMTemplate } from '../template/template';
+import { ARMTemplate } from '../template';
 
 /**
  * Expression types enum.

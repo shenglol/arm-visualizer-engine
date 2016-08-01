@@ -1,8 +1,8 @@
-import * as ExpressionErrors from '../constants/expression-errors';
-import { ExpressionUtils } from './expression-utils';
-import { ExpressionBuilder } from './expression-builder';
+import { ExpressionErrors } from '../constants';
 import { Expression, ExpressionTypes } from './expression-base';
-import { ARMTemplate } from '../template/template';
+import { ExpressionBuilder } from './expression-builder';
+import { ExpressionUtils } from './expression-utils';
+import { ARMTemplate } from '../template';
 
 export class ExpressionParser {
     private expBuilder: ExpressionBuilder;

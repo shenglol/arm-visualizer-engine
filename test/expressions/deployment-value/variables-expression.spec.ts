@@ -1,8 +1,11 @@
-import * as ExpressionErrors from '../../../src/constants/expression-errors';
-import { Expression } from  '../../../src/expressions/expression-base';
-import { VariablesExpression } from '../../../src/expressions/deployment-value/variables-expression';
-import { ARMTemplate } from '../../../src/template/template';
 import { expect } from 'chai';
+
+import {
+    ExpressionErrors,
+    Expression,
+    VariablesExpression,
+    ARMTemplate
+} from '../../../src';
 
 describe('VariablesExpression', () => {
     let exp: Expression;

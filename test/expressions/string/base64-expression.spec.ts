@@ -1,7 +1,10 @@
-import * as ExpressionErrors from '../../../src/constants/expression-errors';
-import { Expression } from  '../../../src/expressions/expression-base';
-import { Base64Expression } from '../../../src/expressions/string/base64-expression';
 import { expect } from 'chai';
+
+import {
+    ExpressionErrors,
+    Expression,
+    Base64Expression
+} from '../../../src';
 
 describe('Base64Expression', () => {
     let exp: Expression;

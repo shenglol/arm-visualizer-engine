@@ -1,4 +1,4 @@
-import * as ExpressionErrors from '../constants/expression-errors';
+import { ExpressionErrors } from '../constants';
 import { ExpressionTypes } from './expression-base';
 
 export class ExpressionUtils {

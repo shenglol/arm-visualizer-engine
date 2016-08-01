@@ -1,10 +1,14 @@
-import * as ExpressionErrors from '../../src/constants/expression-errors';
-import { Expression, ContextualExpressionBase } from  '../../src/expressions/expression-base';
-import { ExpressionContext } from '../../src/expressions/expression-context';
-import { ExpressionBuilder } from '../../src/expressions/expression-builder';
-import { ExpressionParser } from '../../src/expressions/expression-parser';
-import { ARMTemplate } from '../../src/template/template';
 import { expect } from 'chai';
+
+import {
+    ExpressionErrors,
+    Expression,
+    ContextualExpressionBase,
+    ExpressionContext,
+    ExpressionBuilder,
+    ExpressionParser,
+    ARMTemplate
+} from '../../src';
 
 describe('ExpressionBuilder', () => {
     let builder: ExpressionBuilder;

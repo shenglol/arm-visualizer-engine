@@ -1,7 +1,10 @@
-import * as ExpressionErrors from '../../../src/constants/expression-errors';
-import { Expression } from  '../../../src/expressions/expression-base';
-import { ResourceIdExpression } from '../../../src/index';
 import { expect } from 'chai';
+
+import {
+    ExpressionErrors,
+    Expression,
+    ResourceIdExpression
+} from '../../../src';
 
 describe('ResourceIdExpression', () => {
     let exp: Expression;

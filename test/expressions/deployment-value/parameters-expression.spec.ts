@@ -1,8 +1,11 @@
-import * as ExpressionErrors from '../../../src/constants/expression-errors';
-import { Expression } from  '../../../src/expressions/expression-base';
-import { ParametersExpression } from '../../../src/index';
-import { ARMTemplate } from '../../../src/template/template';
 import { expect } from 'chai';
+
+import {
+    ExpressionErrors,
+    Expression,
+    ParametersExpression,
+    ARMTemplate
+} from '../../../src';
 
 describe('ParametersExpression', () => {
     let exp: Expression;

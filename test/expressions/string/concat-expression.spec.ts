@@ -1,5 +1,6 @@
-import { ConcatExpression } from '../../../src/expressions/string/concat-expression';
 import { expect } from 'chai';
+
+import { ConcatExpression } from '../../../src';
 
 describe('ConcatExpression', () => {
     describe('evaluate()', () => {

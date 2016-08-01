@@ -1,7 +1,6 @@
-import * as ExpressionErrors from '../../constants/expression-errors';
+import { ExpressionErrors } from '../../constants';
 import { Expression, ContextualExpressionBase } from '../expression-base';
-import { Parameters } from '../../template/parameters';
-import { ARMTemplate } from '../../template/template';
+import { Parameters, ARMTemplate } from '../../template';
 
 /**
  * ParametersExpression

@@ -1,4 +1,4 @@
-import { Expression, ExpressionBase } from '../../src/expressions/expression-base';
+import { Expression, ExpressionBase } from '../../src';
 import { expect } from 'chai';
 
 class MockExpression extends ExpressionBase {

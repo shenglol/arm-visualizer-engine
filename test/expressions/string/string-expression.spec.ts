@@ -1,7 +1,11 @@
-import * as ExpressionErrors from '../../../src/constants/expression-errors';
-import { Expression, ExpressionBase } from '../../../src/expressions/expression-base';
-import { StringExpression } from '../../../src/expressions/string/string-expression';
 import { expect } from 'chai';
+
+import {
+    ExpressionErrors,
+    Expression,
+    ExpressionBase,
+    StringExpression
+} from '../../../src';
 
 class ObjectExpression extends ExpressionBase {
     evaluate(): Object {

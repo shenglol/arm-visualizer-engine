@@ -1,7 +1,10 @@
-import * as ExpressionErrors from '../../src/constants/expression-errors';
-import { ExpressionUtils } from '../../src/expressions/expression-utils';
-import { ExpressionTypes } from '../../src/expressions/expression-base';
 import { expect } from 'chai';
+
+import {
+    ExpressionErrors,
+    ExpressionUtils,
+    ExpressionTypes
+} from '../../src';
 
 describe('ExpressionUtils', () => {
     describe('isValid()', () => {

@@ -1,5 +1,5 @@
-import * as TemplateErrors from '../constants/template-errors';
-import { ExpressionParser } from '../expressions/expression-parser';
+import { TemplateErrors } from '../constants';
+import { ExpressionParser } from '../expressions';
 import { Parameters } from './Parameters';
 import { Variables } from './Variables';
 import { Resource } from './Resource';

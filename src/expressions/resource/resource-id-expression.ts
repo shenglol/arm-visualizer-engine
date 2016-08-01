@@ -1,7 +1,6 @@
-import * as ExpressionErrors from '../../constants/expression-errors';
+import { ExpressionErrors } from '../../constants';
 import { Expression, ExpressionBase } from '../expression-base';
-import { ARMTemplate } from '../../template/template';
-import { Variables } from '../../template/variables';
+import { Variables, ARMTemplate } from '../../template';
 
 /**
  * ResourceIdExpression

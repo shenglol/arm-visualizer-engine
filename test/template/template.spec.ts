@@ -1,6 +1,9 @@
-import * as TemplateErrors from '../../src/constants/template-errors';
-import { ARMTemplate } from '../../src/template/template';
 import { expect } from 'chai';
+
+import {
+    TemplateErrors,
+    ARMTemplate
+} from '../../src';
 
 describe('ARMTemplate', () => {
     let template: ARMTemplate;

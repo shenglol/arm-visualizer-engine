@@ -1,6 +1,9 @@
-import { ExpressionParser } from '../../src/expressions/expression-parser';
-import { ARMTemplate } from '../../src/template/template';
 import { expect } from 'chai';
+
+import {
+    ExpressionParser,
+    ARMTemplate
+} from '../../src';
 
 describe('ExpressionParser', () => {
     let parser: ExpressionParser;
