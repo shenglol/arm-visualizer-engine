@@ -122,7 +122,7 @@ describe('ParametersExpression', () => {
             expect(exp.evaluate()).to.equal('bar');
         });
 
-        it('should parse expression when parameter value is an expression', () => {
+        it('should evaluate expression when parameter value is an expression', () => {
             template.load(`{
               "$schema": "",
               "contentVersion": "",
@@ -139,6 +139,56 @@ describe('ParametersExpression', () => {
             exp.operands.push('foo');
 
             expect(exp.evaluate()).to.equal('bar');
+        });
+
+        it('should evaluate expression with properties', () => {
+            template.load(`{
+              "$schema": "",
+              "contentVersion": "",
+              "parameters": {
+                  "a": {
+                      "type": "object",
+                      "defaultValue": {
+                          "b": {
+                              "c": "you got me!"
+                          }
+                      }
+                  }
+              },
+              "resources": []
+            }`);
+
+            exp = new ParametersExpression(template);
+            exp.operands.push('a');
+            exp.properties.push('b');
+            exp.properties.push('c');
+
+            expect(exp.evaluate()).to.equal('you got me!');
+        });
+
+        it('should evaluate expression with properties when parameter is an expression', () => {
+            template.load(`{
+              "$schema": "",
+              "contentVersion": "",
+              "parameters": {
+                  "a": {
+                      "type": "object",
+                      "defaultValue": {
+                          "b": {
+                              "c": "[concat('you', ' got', ' me!')]"
+                          }
+                      }
+                  }
+              },
+              "resources": []
+            }`);
+
+            exp = new ParametersExpression(template);
+            exp.operands.push('a');
+            exp.properties.push('b');
+            exp.properties.push('c');
+
+            expect(exp.evaluate()).to.equal('you got me!');
         });
     });
 });

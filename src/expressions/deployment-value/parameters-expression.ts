@@ -28,8 +28,8 @@ export class ParametersExpression extends ContextualExpressionBase {
             throw new Error(ExpressionErrors.NO_KEY_FOUND + ': ' + key);
         }
 
-        let valueObj = this.context[key];
-        let value = valueObj.value || valueObj.defaultValue;
+        let parameter = this.context[key];
+        let value: any = parameter.value || parameter.defaultValue;
 
         if (!value && value !== '') {
             return "parameters('" + key + "')";
@@ -37,6 +37,19 @@ export class ParametersExpression extends ContextualExpressionBase {
 
         if (typeof value === 'string') {
             return this.parser.parse(value);
+        }
+
+        if (typeof value === 'object') {
+            for (let prop of this.properties) {
+                let key: string = typeof prop === 'string' ? prop : <string>prop.evaluate();
+                value = value[key];
+            }
+
+            if (typeof value === 'string') {
+                return this.parser.parse(value);
+            }
+
+            return value;
         }
 
         return value;
