@@ -14,7 +14,7 @@ export class VariablesExpression extends ContextualExpressionBase {
 
     evaluate(): string | Object | any[] {
         if (this._operands.length === 0) {
-            throw new Error(ExpressionErrors.NO_OPERAND);
+            throw new Error(ExpressionErrors.TOO_FEW_OPERANDS);
         }
         if (this._operands.length > 1) {
             throw new Error(ExpressionErrors.TOO_MANY_OPERANDS);

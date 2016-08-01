@@ -17,7 +17,7 @@ describe('Base64Expression', () => {
         it('should throw no operand specified error when no operand present', () => {
             expect(() => {
                 exp.evaluate();
-            }).to.throw(ExpressionErrors.NO_OPERAND);
+            }).to.throw(ExpressionErrors.TOO_FEW_OPERANDS);
         });
 
         it('should throw too many operands specified error when more than one operand present', () => {

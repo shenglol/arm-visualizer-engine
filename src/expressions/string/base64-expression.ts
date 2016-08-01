@@ -7,7 +7,7 @@ import { Expression, ExpressionBase } from '../expression-base';
 export class Base64Expression extends ExpressionBase {
   evaluate(): string {
     if (this._operands.length === 0) {
-      throw new Error(ExpressionErrors.NO_OPERAND);
+      throw new Error(ExpressionErrors.TOO_FEW_OPERANDS);
     }
     if (this._operands.length > 1) {
       throw new Error(ExpressionErrors.TOO_MANY_OPERANDS);
