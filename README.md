@@ -11,7 +11,7 @@ npm install arm-visualizer-engine --save
 
 ### Load a template
 
-```
+```js
 import { ARMTemplate } from 'arm-visualizer-engine';
 
 let template = new ARMTemplate();
@@ -30,7 +30,7 @@ console.log(template.resources[0]); // { "name": "resourceA" }
 ### Parse an expression
 
 
-```
+```js
 import { ARMTemplate } from 'arm-visualizer-engine';
 
 let template = new ARMTemplate();
@@ -51,7 +51,7 @@ console.log(template.parser.parse("[parameters('username')]"));  // 'foo'
 
 ### Resolve dependencies
 
-```
+```js
 import { Resource, ARMTemplate } from 'arm-visualizer-engine';
 
 let template = new ARMTemplate();
