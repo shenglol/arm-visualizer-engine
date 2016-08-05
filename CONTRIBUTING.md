@@ -3,8 +3,9 @@
 ## Getting Started
 
 * Run: `npm install` inside your project to install dependencies.
-* Run: `npm install typings -g` (If [typings](https://www.npmjs.com/package/typings) is not installed before run this command)
-* Run:`npm install gulp -g` to install [Gulp](https://www.npmjs.com/package/gulp) globally
+* Run: `npm install typings -g` (If [typings](https://www.npmjs.com/package/typings) is not installed before run this command).
+* Run:`npm install github:gulpjs/gulp#4.0 -g` to install [Gulp](https://www.npmjs.com/package/gulp) globally.
+* Run: `typings install` to install TypesSript Definitions.
 * Follow the Complete Directory Layout to get to know about the project.
 
 ### Complete Directory Layout
@@ -53,8 +54,6 @@ Usage          	            | Technology
 Javascript Framework        | Typescript
 Unit Testing Framework     	| Mocha and Chai
 Unit Test Runner           	| Karma
-Coverage Generator         	| Istanbul
-Documentation              	| Typedoc
 Build Tool                	| Gulp
 Code Quality Tools         	| JS Hint, TS Lint
 Dependency Registries      	| NPM
