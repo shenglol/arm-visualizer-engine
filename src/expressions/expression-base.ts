@@ -1,5 +1,5 @@
 import { ExpressionParser } from './expression-parser';
-import { Parameters, Variables, Template, ARMTemplate } from '../template';
+import { TemplateEngine } from '../template';
 
 /**
  * ARM template expression interface.
@@ -63,15 +63,7 @@ export abstract class ExpressionBase implements Expression {
  * Base class for ARM template expression with context
  */
 export abstract class ContextualExpressionBase extends ExpressionBase {
-    protected context: Parameters | Variables;
-    protected parser: ExpressionParser;
-
-    constructor(template: ARMTemplate) {
+    constructor(protected engine: TemplateEngine) {
         super();
-
-        this.parser = template.parser;
-        this.setContext(template);
     }
-
-    protected abstract setContext(template: Template): void;
 }

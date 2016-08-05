@@ -1,15 +1,12 @@
 import { expect } from 'chai';
 
-import {
-    ExpressionParser,
-    ARMTemplate
-} from '../../src';
+import { ExpressionBuilder, ExpressionParser } from '../../src';
 
 describe('ExpressionParser', () => {
     let parser: ExpressionParser;
 
-    before(() => {
-        parser = new ExpressionParser(null);
+    beforeEach(() => {
+        parser = new ExpressionParser(new ExpressionBuilder(null));
     });
 
     describe('parse()', () => {
@@ -33,24 +30,5 @@ describe('ExpressionParser', () => {
 
             expect(result).to.equal('foo-bar');
         });
-
-        it('should parse an expression with context', () => {
-            let template = new ARMTemplate();
-            template.load(`{
-                "$schema": "",
-                "contentVersion": "",
-                "variables": {
-                    "foo": "bar"
-                },
-                "resources": []
-            }`);
-
-            let source = "[variables('foo')]";
-            let result = template.parser.parse(source);
-
-            expect(result).to.equal('bar');
-        });
-
-        // TODO: more test cases with other expressions
     });
 });

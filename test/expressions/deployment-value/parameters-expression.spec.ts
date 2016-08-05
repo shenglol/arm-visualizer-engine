@@ -1,23 +1,18 @@
 import { expect } from 'chai';
 
-import {
-    ExpressionErrors,
-    Expression,
-    ParametersExpression,
-    ARMTemplate
-} from '../../../src';
+import { ExpressionErrors, Expression, ParametersExpression, TemplateEngine } from '../../../src';
 
 describe('ParametersExpression', () => {
     let exp: Expression;
-    let template: ARMTemplate;
+    let engine: TemplateEngine;
 
-    before(() => {
-        template = new ARMTemplate();
+    beforeEach(() => {
+        engine = new TemplateEngine();
     });
 
     describe('evaluate()', () => {
         it('should throw no operand specified error when no operand present', () => {
-            exp = new ParametersExpression(template);
+            exp = new ParametersExpression(engine);
 
             expect(() => {
                 exp.evaluate();
@@ -25,7 +20,7 @@ describe('ParametersExpression', () => {
         });
 
         it('should throw too many operands specified error when more than one operand present', () => {
-            exp = new ParametersExpression(template);
+            exp = new ParametersExpression(engine);
             exp.operands.push('foo');
             exp.operands.push('bar');
 
@@ -35,13 +30,13 @@ describe('ParametersExpression', () => {
         });
 
         it('should throw no context specified error when no parameters present', () => {
-            template.load(`{
+            engine.loadTemplate(`{
                 "$schema": "",
                 "contentVersion": "",
                 "resources": []
             }`);
 
-            exp = new ParametersExpression(template);
+            exp = new ParametersExpression(engine);
             exp.operands.push('foo');
 
             expect(() => {
@@ -50,14 +45,14 @@ describe('ParametersExpression', () => {
         });
 
         it('should throw no key found error when key does not exsits in parameters', () => {
-            template.load(`{
+            engine.loadTemplate(`{
               "$schema": "",
               "contentVersion": "",
               "parameters": {},
               "resources": []
             }`);
 
-            exp = new ParametersExpression(template);
+            exp = new ParametersExpression(engine);
             exp.operands.push('foo');
 
             expect(() => {
@@ -66,7 +61,7 @@ describe('ParametersExpression', () => {
         });
 
         it('should return degenerate parameter expression string when no defaultValue or value present', () => {
-            template.load(`{
+            engine.loadTemplate(`{
               "$schema": "",
               "contentVersion": "",
               "parameters": {
@@ -77,14 +72,14 @@ describe('ParametersExpression', () => {
               "resources": []
             }`);
 
-            exp = new ParametersExpression(template);
+            exp = new ParametersExpression(engine);
             exp.operands.push('foo');
 
             expect(exp.evaluate()).to.equal("parameters('foo')");
         });
 
         it('should return parameter default value when defaultValue present', () => {
-            template.load(`{
+            engine.loadTemplate(`{
               "$schema": "",
               "contentVersion": "",
               "parameters": {
@@ -96,14 +91,14 @@ describe('ParametersExpression', () => {
               "resources": []
             }`);
 
-            exp = new ParametersExpression(template);
+            exp = new ParametersExpression(engine);
             exp.operands.push('foo');
 
             expect(exp.evaluate()).to.equal('bar');
         });
 
         it('should return parameter default value when value present', () => {
-            template.load(`{
+            engine.loadTemplate(`{
               "$schema": "",
               "contentVersion": "",
               "parameters": {
@@ -116,14 +111,14 @@ describe('ParametersExpression', () => {
               "resources": []
             }`);
 
-            exp = new ParametersExpression(template);
+            exp = new ParametersExpression(engine);
             exp.operands.push('foo');
 
             expect(exp.evaluate()).to.equal('bar');
         });
 
         it('should evaluate expression when parameter value is an expression', () => {
-            template.load(`{
+            engine.loadTemplate(`{
               "$schema": "",
               "contentVersion": "",
               "parameters": {
@@ -135,14 +130,14 @@ describe('ParametersExpression', () => {
               "resources": []
             }`);
 
-            exp = new ParametersExpression(template);
+            exp = new ParametersExpression(engine);
             exp.operands.push('foo');
 
             expect(exp.evaluate()).to.equal('bar');
         });
 
         it('should evaluate expression with properties', () => {
-            template.load(`{
+            engine.loadTemplate(`{
               "$schema": "",
               "contentVersion": "",
               "parameters": {
@@ -158,7 +153,7 @@ describe('ParametersExpression', () => {
               "resources": []
             }`);
 
-            exp = new ParametersExpression(template);
+            exp = new ParametersExpression(engine);
             exp.operands.push('a');
             exp.properties.push('b');
             exp.properties.push('c');
@@ -167,7 +162,7 @@ describe('ParametersExpression', () => {
         });
 
         it('should evaluate expression with properties when parameter is an expression', () => {
-            template.load(`{
+            engine.loadTemplate(`{
               "$schema": "",
               "contentVersion": "",
               "parameters": {
@@ -183,7 +178,7 @@ describe('ParametersExpression', () => {
               "resources": []
             }`);
 
-            exp = new ParametersExpression(template);
+            exp = new ParametersExpression(engine);
             exp.operands.push('a');
             exp.properties.push('b');
             exp.properties.push('c');
@@ -192,7 +187,7 @@ describe('ParametersExpression', () => {
         });
 
         it('should evaluate expression with complex properties when parameter is an expression', () => {
-            template.load(`{
+            engine.loadTemplate(`{
                 "$schema": "",
                 "contentVersion": "",
                 "parameters": {
@@ -210,7 +205,7 @@ describe('ParametersExpression', () => {
                 "resources": []
             }`);
 
-            exp = new ParametersExpression(template);
+            exp = new ParametersExpression(engine);
             exp.operands.push('a');
             exp.properties.push(2);
             exp.properties.push('c');

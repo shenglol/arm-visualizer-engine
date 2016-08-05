@@ -3,14 +3,12 @@ import { Expression } from './expression-base';
 import { ExpressionTypes } from './expression-types';
 import { ExpressionBuilder } from './expression-builder';
 import { ExpressionUtils } from './expression-utils';
-import { ARMTemplate } from '../template';
+import { TemplateEngine } from '../template';
 
 export class ExpressionParser {
-    private expBuilder: ExpressionBuilder;
     private parseCache: { [source: string]: string | Object | any[] };
 
-    constructor(template: ARMTemplate) {
-        this.expBuilder = new ExpressionBuilder(template);
+    constructor(private builder: ExpressionBuilder) {
         this.parseCache = {};
     }
 
@@ -29,9 +27,13 @@ export class ExpressionParser {
             return source;
         }
 
-        let exp = this.expBuilder.buildExpression(source);
+        let exp = this.builder.buildExpression(source);
         let result = this.parseCache[source] = exp.evaluate();
 
         return result;
+    }
+
+    clearCache() {
+        this.parseCache = {};
     }
 }

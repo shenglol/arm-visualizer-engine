@@ -6,13 +6,12 @@ import {
     ContextualExpressionBase,
     ExpressionBuilder,
     ExpressionParser,
-    ARMTemplate
 } from '../../src';
 
 describe('ExpressionBuilder', () => {
     let builder: ExpressionBuilder;
 
-    before(() => {
+    beforeEach(() => {
         builder = new ExpressionBuilder(null);
     });
 

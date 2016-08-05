@@ -1,13 +1,11 @@
 import { ExpressionErrors } from '../../constants';
 import { Expression, ContextualExpressionBase } from '../expression-base';
-import { Variables, Template, ARMTemplate } from '../../template/';
+import { TemplateEngine } from '../../template/';
 
 /**
  * VarialbesExpression
  */
 export class VariablesExpression extends ContextualExpressionBase {
-    protected context: Variables;
-
     evaluate(): string | Object | any[] {
         if (this._operands.length === 0) {
             throw new Error(ExpressionErrors.TOO_FEW_OPERANDS);
@@ -16,7 +14,9 @@ export class VariablesExpression extends ContextualExpressionBase {
             throw new Error(ExpressionErrors.TOO_MANY_OPERANDS);
         }
 
-        if (!this.context) {
+        let variables = this.engine.template.variables;
+
+        if (!variables) {
             throw new Error(ExpressionErrors.NO_CONTEXT + ': variables');
         }
 
@@ -24,15 +24,15 @@ export class VariablesExpression extends ContextualExpressionBase {
             ? <string>this.operands[0]
             : <string>(<Expression>this.operands[0]).evaluate();
 
-        if (!(key in this.context)) {
+        if (!(key in variables)) {
             throw new Error(ExpressionErrors.NO_KEY_FOUND + ': ' + key);
         }
 
-        let value = this.context[key];
+        let value = variables[key];
 
         // value could be another expression
         if (typeof value === 'string') {
-            return this.parser.parse(value);
+            return this.engine.resolveExpression(value);
         }
 
         if (typeof value === 'object') {
@@ -43,16 +43,12 @@ export class VariablesExpression extends ContextualExpressionBase {
             }
 
             if (typeof value === 'string') {
-                return this.parser.parse(value);
+                return this.engine.resolveExpression(value);
             }
 
             return value;
         }
 
         return value;
-    }
-
-    protected setContext(template: Template) {
-        this.context = template.variables;
     }
 }
