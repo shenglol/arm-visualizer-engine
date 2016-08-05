@@ -66,8 +66,5 @@ Here is the list of tasks available out of the box and run these via `npm run <t
   clean             Cleans lib directory
   test              Run spec tests
   test:auto         Run auto spec tests
-  patch             Update patch version and create tag
-  feature           Update feature version and create tag
-  release           Update release version and create tag
 ```
 
