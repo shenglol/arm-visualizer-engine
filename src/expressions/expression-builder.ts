@@ -3,7 +3,7 @@ import { ExpressionErrors } from '../constants';
 import { ExpressionUtils } from './expression-utils';
 import { Expression } from './expression-base';
 import { ExpressionTypes } from './expression-types';
-import { ARMTemplate } from '../template';
+import { TemplateEngine } from '../template';
 
 const DOT = '.';
 const SPACE = ' ';
@@ -18,7 +18,7 @@ const CLOSED_SQURE_BRACKET = ']';
  * Build expression from an expression source string
  */
 export class ExpressionBuilder {
-    constructor(private template: ARMTemplate) { }
+    constructor(private engine: TemplateEngine) { }
 
     buildExpression(source: string): Expression {
         let openIndex = this.getOpenIndex(source);
@@ -28,7 +28,7 @@ export class ExpressionBuilder {
         let operandsSource = this.getOperandsSource(source, openIndex, closedIndex);
         let propsSource = this.getPropsSourrce(source, closedIndex);
 
-        let exp: Expression = new (<any>Expressions)[expName](this.template);
+        let exp: Expression = new (<any>Expressions)[expName](this.engine);
         exp.operands = this.buildOperands(operandsSource);
         exp.properties = this.buildProperties(propsSource);
 

@@ -1,23 +1,18 @@
 import { expect } from 'chai';
 
-import {
-    ExpressionErrors,
-    Expression,
-    VariablesExpression,
-    ARMTemplate
-} from '../../../src';
+import { ExpressionErrors, Expression, VariablesExpression, TemplateEngine } from '../../../src';
 
 describe('VariablesExpression', () => {
     let exp: Expression;
-    let template: ARMTemplate;
+    let engine: TemplateEngine;
 
-    before(() => {
-        template = new ARMTemplate();
+    beforeEach(() => {
+        engine = new TemplateEngine();
     });
 
     describe('evaluate()', () => {
         it('should throw no operand specified error when no operand present', () => {
-            exp = new VariablesExpression(template);
+            exp = new VariablesExpression(engine);
 
             expect(() => {
                 exp.evaluate();
@@ -25,7 +20,7 @@ describe('VariablesExpression', () => {
         });
 
         it('should throw too many operands specified error when more than one operand present', () => {
-            exp = new VariablesExpression(template);
+            exp = new VariablesExpression(engine);
             exp.operands.push('foo');
             exp.operands.push('bar');
 
@@ -35,13 +30,13 @@ describe('VariablesExpression', () => {
         });
 
         it('should throw no context specified error when no variables present', () => {
-            template.load(`{
+            engine.loadTemplate(`{
                 "$schema": "",
                 "contentVersion": "",
                 "resources": []
             }`);
 
-            exp = new VariablesExpression(template);
+            exp = new VariablesExpression(engine);
             exp.operands.push('foo');
 
             expect(() => {
@@ -50,14 +45,14 @@ describe('VariablesExpression', () => {
         });
 
         it('should throw no key found error when key does not exsits in variables', () => {
-            template.load(`{
+            engine.loadTemplate(`{
               "$schema": "",
               "contentVersion": "",
               "variables": {},
               "resources": []
             }`);
 
-            exp = new VariablesExpression(template);
+            exp = new VariablesExpression(engine);
             exp.operands.push('foo');
 
             expect(() => {
@@ -66,7 +61,7 @@ describe('VariablesExpression', () => {
         });
 
         it('should return variable', () => {
-            template.load(`{
+            engine.loadTemplate(`{
               "$schema": "",
               "contentVersion": "",
               "variables": {
@@ -75,14 +70,14 @@ describe('VariablesExpression', () => {
               "resources": []
             }`);
 
-            exp = new VariablesExpression(template);
+            exp = new VariablesExpression(engine);
             exp.operands.push('foo');
 
             expect(exp.evaluate()).to.equal('bar');
         });
 
         it('should return variable with nested expression operand', () => {
-            template.load(`{
+            engine.loadTemplate(`{
               "$schema": "",
               "contentVersion": "",
               "variables": {
@@ -92,17 +87,17 @@ describe('VariablesExpression', () => {
               "resources": []
             }`);
 
-            let nested = new VariablesExpression(template);
+            let nested = new VariablesExpression(engine);
             nested.operands.push('a');
 
-            exp = new VariablesExpression(template);
+            exp = new VariablesExpression(engine);
             exp.operands.push(nested);
 
             expect(exp.evaluate()).to.equal('c');
         });
 
         it('should evaluate expression when variable value is an expression', () => {
-            template.load(`{
+            engine.loadTemplate(`{
               "$schema": "",
               "contentVersion": "",
               "variables": {
@@ -111,14 +106,14 @@ describe('VariablesExpression', () => {
               "resources": []
             }`);
 
-            exp = new VariablesExpression(template);
+            exp = new VariablesExpression(engine);
             exp.operands.push('42');
 
             expect(exp.evaluate()).to.equal('the meaning of life');
         });
 
         it('should evaluate expression with properties', () => {
-            template.load(`{
+            engine.loadTemplate(`{
               "$schema": "",
               "contentVersion": "",
               "variables": {
@@ -131,7 +126,7 @@ describe('VariablesExpression', () => {
               "resources": []
             }`);
 
-            exp = new VariablesExpression(template);
+            exp = new VariablesExpression(engine);
             exp.operands.push('a');
             exp.properties.push('b');
             exp.properties.push('c');
@@ -140,7 +135,7 @@ describe('VariablesExpression', () => {
         });
 
         it('should evaluate expression with properties when variable is an expression', () => {
-            template.load(`{
+            engine.loadTemplate(`{
                 "$schema": "",
                 "contentVersion": "",
                 "variables": {
@@ -153,7 +148,7 @@ describe('VariablesExpression', () => {
                 "resources": []
             }`);
 
-            exp = new VariablesExpression(template);
+            exp = new VariablesExpression(engine);
             exp.operands.push('a');
             exp.properties.push('b');
             exp.properties.push('c');
@@ -162,7 +157,7 @@ describe('VariablesExpression', () => {
         });
 
         it('should evaluate expression with complex properties when variable is an expression', () => {
-            template.load(`{
+            engine.loadTemplate(`{
                 "$schema": "",
                 "contentVersion": "",
                 "variables": {
@@ -178,7 +173,7 @@ describe('VariablesExpression', () => {
                 "resources": []
             }`);
 
-            exp = new VariablesExpression(template);
+            exp = new VariablesExpression(engine);
             exp.operands.push('a');
             exp.properties.push(2);
             exp.properties.push('b');
