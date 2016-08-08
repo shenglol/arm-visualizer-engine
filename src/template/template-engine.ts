@@ -1,8 +1,13 @@
-import { TemplateErrors } from '../constants';
 import { Resource } from './resource';
 import { Template } from './template';
 import { ExpressionBuilder } from '../expressions';
 import { ExpressionParser } from '../expressions';
+import { ErrorManager } from '../shared';
+import {
+    MissingTemplatePropertyError,
+    DependencyNotFoundError,
+    DuplicateDependenciesError
+} from '../shared';
 
 const defaultTemplate: Template = {
    $schema: "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
@@ -15,7 +20,8 @@ const defaultTemplate: Template = {
 
 export class TemplateEngine {
     private _template: Template;
-    private _resolveErrors: string[];
+    private _templateData: string;
+    private _errorManager: ErrorManager;
     private parser: ExpressionParser;
 
     get template(): Template {
@@ -23,54 +29,65 @@ export class TemplateEngine {
     }
 
     get templateData(): string {
-        return JSON.stringify(this._template, null, 2);
-    }
-
-    get templateResources(): Resource[] {
-        // TODO: copyIndex();
-        let resources: Resource[] = [];
-
-        for (let resource of this._template.resources) {
-            resources.push(resource);
-            resources = resources.concat(this.getDescendants(resource));
+        if (this.template) {
+            this._templateData = JSON.stringify(this.template, null, 2);
         }
 
-        return resources;
+        return this._templateData;
     }
 
-    get resolveErrors(): string[] {
-        return this._resolveErrors;
+    get errorManager(): ErrorManager {
+        return this._errorManager;
     }
 
     constructor() {
-        this._template = defaultTemplate;
+        this.setTemplate(defaultTemplate);
+        this._errorManager = new ErrorManager();
         this.parser = new ExpressionParser(new ExpressionBuilder(this));
     }
 
     loadTemplate(data: string) {
-        let template: Template = JSON.parse(data);
-
-        if (!template.$schema && template.$schema !== '') {
-            throw new Error(TemplateErrors.MISSING_$SCHEMA);
-        }
-        if (!template.contentVersion && template.contentVersion !== '') {
-            throw new Error(TemplateErrors.MISSING_CONTENT_VERSION);
-        }
-        if (!template.resources && template.resources !== []) {
-            throw new Error(TemplateErrors.MISSING_RESOURCES);
-        }
-
-        this._template = template;
+        this.errorManager.clearErrors();
+        this.setTemplateData(data);
         this.parser.clearCache();
+
+        try {
+            let template: Template = JSON.parse(data);
+            this.setTemplate(template);
+
+            // TODO: validate template and try to get errors
+            // 1. Resolve every expression in template
+            // 2. Get dependencies of every resource
+
+        } catch (error) {
+            this.setTemplate(null);
+            this.errorManager.addTemplateError(error);
+        }
     }
 
     resolveExpression(source: string): string | Object | any[] {
         try {
             return this.parser.parse(source);
         } catch (error) {
-            console.log(TemplateErrors.UNABLE_TO_RESOLVE_EXPRESSION);
+            this.errorManager.addExpressionError(source, error);
             return source;
         }
+    }
+
+    resolveAllResources(): Resource[] {
+        if (!this.template) {
+            return [];
+        }
+
+        // TODO: copyIndex();
+        let resources: Resource[] = [];
+
+        for (let resource of this.template.resources) {
+            resources.push(resource);
+            resources = resources.concat(this.getDescendants(resource));
+        }
+
+        return resources;
     }
 
     resolveDependencies(resource: Resource): Resource[] {
@@ -84,15 +101,36 @@ export class TemplateEngine {
             : <string[]>resource.dependsOn;
 
         for (let source of sources) {
-            let depId = <string>this.resolveExpression(source);
-            deps = deps.concat(this.getDependencies(depId, '', this.template.resources));
+            try {
+                deps.push(this.getDependency(source, this.template.resources));
+            } catch (error) {
+                this.errorManager.addTemplateError(error);
+            }
         }
 
         return deps;
     }
 
-    clearResolveErrors() {
-        this._resolveErrors = [];
+    private setTemplate(template: Template) {
+        this._template = template;
+
+        if (!template) {
+            return;
+        }
+
+        if (!template.$schema && template.$schema !== '') {
+            this.errorManager.addTemplateError(new MissingTemplatePropertyError('$schema'));
+        }
+        if (!template.contentVersion && template.contentVersion !== '') {
+            this.errorManager.addTemplateError(new MissingTemplatePropertyError('contentVersion'));
+        }
+        if (!template.resources && template.resources !== []) {
+            this.errorManager.addTemplateError(new MissingTemplatePropertyError('resources'));
+        }
+    }
+
+    private setTemplateData(data: string) {
+        this._templateData = data;
     }
 
     private getDescendants(resource: Resource): Resource[] {
@@ -106,7 +144,21 @@ export class TemplateEngine {
         return descendants;
     }
 
-    private getDependencies(depId: string, parentId: string, resources: Resource[]): Resource[] {
+    private getDependency(source: string, resources: Resource[]): Resource {
+        let depId = <string>this.resolveExpression(source);
+        let deps = this.getDependencyHelper(depId, '', this.template.resources);
+
+        if (deps.length < 1) {
+            throw new DependencyNotFoundError(source);
+        }
+        if (deps.length > 1) {
+            throw new DuplicateDependenciesError(source);
+        }
+
+        return deps[0];
+    }
+
+    private getDependencyHelper(depId: string, parentId: string, resources: Resource[]): Resource[] {
         let deps: Resource[] = [];
 
         for (let resource of resources) {
@@ -118,17 +170,10 @@ export class TemplateEngine {
                     deps.push(resource);
                 } else {
                     if (resource.resources) {
-                        deps = deps.concat(this.getDependencies(depId, resourceId + '/', resource.resources));
+                        deps = deps.concat(this.getDependencyHelper(depId, resourceId + '/', resource.resources));
                     }
                 }
             }
-        }
-
-        if (deps.length === 0) {
-            console.error(TemplateErrors.UNABLE_TO_FIND_DEPENDENCIES);
-        }
-        if (deps.length > 1) {
-            console.error(TemplateErrors.FOUND_MORE_THAN_ONE_DEPENDENCY);
         }
 
         return deps;

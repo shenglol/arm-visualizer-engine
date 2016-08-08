@@ -20,37 +20,12 @@ describe('TemplateEngine', () => {
     });
 
     describe('loadTemplate()', () => {
-        it('should throw missing $schema property error when $schema not present', () => {
-            let data = `{
-                "contentVersion": "",
-                "resources": [  ]
-            }`;
+        it('should add MissingTemplatePropertyError when necessary properties not present', () => {
+            let data = `{}`;
 
-            expect(() => {
-                engine.loadTemplate(data);
-            }).to.throw(TemplateErrors.MISSING_$SCHEMA);
-        });
+            engine.loadTemplate(data);
 
-        it('should throw missing contentVersion property error when contentVersion not present', () => {
-            let data = `{
-                "$schema": "",
-                "resources": [  ]
-            }`;
-
-            expect(() => {
-                engine.loadTemplate(data);
-            }).to.throw(TemplateErrors.MISSING_CONTENT_VERSION);
-        });
-
-        it('should throw missing resources property error when contentVersion not present', () => {
-            let data = `{
-                "$schema": "",
-                "contentVersion": ""
-            }`;
-
-            expect(() => {
-                engine.loadTemplate(data);
-            }).to.throw(TemplateErrors.MISSING_RESOURCES);
+            expect(engine.errorManager.templateErrors.length).to.equal(3);
         });
 
         it('should load a valid engine', () => {
@@ -68,7 +43,7 @@ describe('TemplateEngine', () => {
         });
     });
 
-    describe('templateData', () => {
+    describe('loadTemplate', () => {
         it('should return engine JSON string', () => {
             let data = `{
                 "$schema": "",
@@ -85,7 +60,7 @@ describe('TemplateEngine', () => {
         });
     });
 
-    describe('templateResources', () => {
+    describe('resolveAllResources', () => {
         it('should return all engine resources', () => {
             let data = `{
                 "$schema": "",
@@ -139,7 +114,7 @@ describe('TemplateEngine', () => {
 
             engine.loadTemplate(data);
 
-            expect(engine.templateResources.length).to.equal(7);
+            expect(engine.resolveAllResources().length).to.equal(7);
         });
     });
 

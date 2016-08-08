@@ -1,5 +1,3 @@
-import { TemplateErrors } from '../constants';
-import { ExpressionParser } from '../expressions';
 import { Parameters } from './Parameters';
 import { Variables } from './Variables';
 import { Resource } from './Resource';

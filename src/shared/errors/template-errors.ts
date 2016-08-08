@@ -6,9 +6,9 @@ export class MissingTemplatePropertyError extends Error {
     }
 }
 
-export class DependenciesNotFound extends Error {
+export class DependencyNotFoundError extends Error {
     constructor(source: string) {
-        super(ErrorMessages.DEPENDENCIES_NOT_FOUND + ' for expression: ' + source);
+        super(ErrorMessages.DEPENDENCY_NOT_FOUND + ' for expression: ' + source);
     }
 }
 
