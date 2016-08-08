@@ -1,6 +1,12 @@
 import { expect } from 'chai';
 
-import { ExpressionErrors, Expression, ParametersExpression, TemplateEngine } from '../../../src';
+import { Expression, ParametersExpression, TemplateEngine } from '../../../src';
+import {
+    TooFewOperandsError,
+    TooManyOperandsError,
+    ExpContextNotFoundError,
+    PropertyNotFoundError
+} from '../../../src';
 
 describe('ParametersExpression', () => {
     let exp: Expression;
@@ -11,25 +17,25 @@ describe('ParametersExpression', () => {
     });
 
     describe('evaluate()', () => {
-        it('should throw no operand specified error when no operand present', () => {
+        it('should throw TooFewOperandsError when no operand present', () => {
             exp = new ParametersExpression(engine);
 
             expect(() => {
                 exp.evaluate();
-            }).to.throw(ExpressionErrors.TOO_FEW_OPERANDS);
+            }).to.throw(TooFewOperandsError);
         });
 
-        it('should throw too many operands specified error when more than one operand present', () => {
+        it('should throw TooManyOperandsError when more than one operand present', () => {
             exp = new ParametersExpression(engine);
             exp.operands.push('foo');
             exp.operands.push('bar');
 
             expect(() => {
                 exp.evaluate();
-            }).to.throw(ExpressionErrors.TOO_MANY_OPERANDS);
+            }).to.throw(TooManyOperandsError);
         });
 
-        it('should throw no context specified error when no parameters present', () => {
+        it('should throw ExpContextNotFoundError when no parameters present', () => {
             engine.loadTemplate(`{
                 "$schema": "",
                 "contentVersion": "",
@@ -41,10 +47,10 @@ describe('ParametersExpression', () => {
 
             expect(() => {
                 exp.evaluate();
-            }).to.throw(ExpressionErrors.NO_CONTEXT + ': parameters');
+            }).to.throw(ExpContextNotFoundError);
         });
 
-        it('should throw no key found error when key does not exsits in parameters', () => {
+        it('should throw PropertyNotFoundError when key does not exsits in parameters', () => {
             engine.loadTemplate(`{
               "$schema": "",
               "contentVersion": "",
@@ -57,7 +63,7 @@ describe('ParametersExpression', () => {
 
             expect(() => {
                 exp.evaluate();
-            }).to.throw(ExpressionErrors.NO_KEY_FOUND + ': foo');
+            }).to.throw(PropertyNotFoundError);
         });
 
         it('should return degenerate parameter expression string when no defaultValue or value present', () => {

@@ -1,10 +1,7 @@
 import { expect } from 'chai';
 
-import {
-    ExpressionErrors,
-    Expression,
-    ResourceIdExpression
-} from '../../../src';
+import { Expression, ResourceIdExpression } from '../../../src';
+import { TooFewOperandsError } from '../../../src';
 
 describe('ResourceIdExpression', () => {
     let exp: Expression;
@@ -17,7 +14,7 @@ describe('ResourceIdExpression', () => {
         it('should throw too few operands specified error when less than two operand present', () => {
             expect(() => {
                 exp.evaluate();
-            }).to.throw(ExpressionErrors.TOO_FEW_OPERANDS);
+            }).to.throw(TooFewOperandsError);
         });
 
         it('should return resource id', () => {

@@ -1,6 +1,11 @@
-import { ExpressionErrors } from '../../constants';
-import { Expression, ContextualExpressionBase } from '../expression-base';
+import { Expression, ExpressionBase, ContextualExpressionBase } from '../expression-base';
 import { TemplateEngine } from '../../template/';
+import {
+    TooFewOperandsError,
+    TooManyOperandsError,
+    ExpContextNotFoundError,
+    PropertyNotFoundError
+} from '../../shared';
 
 /**
  * VarialbesExpression
@@ -8,47 +13,51 @@ import { TemplateEngine } from '../../template/';
 export class VariablesExpression extends ContextualExpressionBase {
     evaluate(): string | Object | any[] {
         if (this._operands.length === 0) {
-            throw new Error(ExpressionErrors.TOO_FEW_OPERANDS);
+            throw new TooFewOperandsError();
         }
         if (this._operands.length > 1) {
-            throw new Error(ExpressionErrors.TOO_MANY_OPERANDS);
+            throw new TooManyOperandsError();
         }
 
         let variables = this.engine.template.variables;
 
         if (!variables) {
-            throw new Error(ExpressionErrors.NO_CONTEXT + ': variables');
+            throw new ExpContextNotFoundError('variables');
         }
 
-        let key: string = typeof this.operands[0] === 'string'
-            ? <string>this.operands[0]
-            : <string>(<Expression>this.operands[0]).evaluate();
+        let operand = this.operands[0];
+        let varName: string = operand instanceof ExpressionBase
+            ? <string>operand.evaluate() : <string>operand;
 
-        if (!(key in variables)) {
-            throw new Error(ExpressionErrors.NO_KEY_FOUND + ': ' + key);
+        if (!(varName in variables)) {
+            throw new PropertyNotFoundError(varName);
         }
 
-        let value = variables[key];
+        let variable = variables[varName];
 
-        // value could be another expression
-        if (typeof value === 'string') {
-            return this.engine.resolveExpression(value);
+        // value can be another expression
+        if (typeof variable === 'string') {
+            return this.engine.resolveExpression(variable);
         }
 
-        if (typeof value === 'object') {
+        if (typeof variable === 'object') {
             for (let prop of this.properties) {
-                let key = typeof prop === 'string' || typeof prop === 'number'
-                    ? prop : <string | number>prop.evaluate();
-                value = (<any>value)[key];
+                prop = prop instanceof ExpressionBase ? <string | number>prop.evaluate() : prop;
+                variable = (<any>variable)[<string | number>prop];
+
+                if (!variable) {
+                    throw new PropertyNotFoundError(<string>prop);
+                }
             }
 
-            if (typeof value === 'string') {
-                return this.engine.resolveExpression(value);
+            // value can be another expression
+            if (typeof variable === 'string') {
+                return this.engine.resolveExpression(variable);
             }
 
-            return value;
+            return variable;
         }
 
-        return value;
+        return variable;
     }
 }

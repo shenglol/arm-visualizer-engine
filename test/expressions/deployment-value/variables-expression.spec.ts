@@ -1,6 +1,13 @@
 import { expect } from 'chai';
 
-import { ExpressionErrors, Expression, VariablesExpression, TemplateEngine } from '../../../src';
+import { Expression, VariablesExpression, TemplateEngine } from '../../../src';
+import {
+    TooFewOperandsError,
+    TooManyOperandsError,
+    ExpContextNotFoundError,
+    PropertyNotFoundError
+} from '../../../src';
+
 
 describe('VariablesExpression', () => {
     let exp: Expression;
@@ -11,25 +18,25 @@ describe('VariablesExpression', () => {
     });
 
     describe('evaluate()', () => {
-        it('should throw no operand specified error when no operand present', () => {
+        it('should throw TooFewOperandsError when no operand present', () => {
             exp = new VariablesExpression(engine);
 
             expect(() => {
                 exp.evaluate();
-            }).to.throw(ExpressionErrors.TOO_FEW_OPERANDS);
+            }).to.throw(TooFewOperandsError);
         });
 
-        it('should throw too many operands specified error when more than one operand present', () => {
+        it('should throw TooManyOperandsError when more than one operand present', () => {
             exp = new VariablesExpression(engine);
             exp.operands.push('foo');
             exp.operands.push('bar');
 
             expect(() => {
                 exp.evaluate();
-            }).to.throw(ExpressionErrors.TOO_MANY_OPERANDS);
+            }).to.throw(TooManyOperandsError);
         });
 
-        it('should throw no context specified error when no variables present', () => {
+        it('should throw ExpContextNotFoundError when no variables present', () => {
             engine.loadTemplate(`{
                 "$schema": "",
                 "contentVersion": "",
@@ -41,10 +48,10 @@ describe('VariablesExpression', () => {
 
             expect(() => {
                 exp.evaluate();
-            }).to.throw(ExpressionErrors.NO_CONTEXT + ': variables');
+            }).to.throw(ExpContextNotFoundError);
         });
 
-        it('should throw no key found error when key does not exsits in variables', () => {
+        it('should throw PropertyNotFoundError when key does not exsits in variables', () => {
             engine.loadTemplate(`{
               "$schema": "",
               "contentVersion": "",
@@ -57,7 +64,7 @@ describe('VariablesExpression', () => {
 
             expect(() => {
                 exp.evaluate();
-            }).to.throw(ExpressionErrors.NO_KEY_FOUND + ': foo');
+            }).to.throw(PropertyNotFoundError);
         });
 
         it('should return variable', () => {

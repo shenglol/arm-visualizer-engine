@@ -1,5 +1,4 @@
 import * as Expressions from './expressions';
-import { ExpressionErrors } from '../constants';
 import { ExpressionUtils } from './expression-utils';
 import { Expression } from './expression-base';
 import { ExpressionTypes } from './expression-types';

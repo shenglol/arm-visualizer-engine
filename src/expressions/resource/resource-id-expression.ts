@@ -1,5 +1,5 @@
-import { ExpressionErrors } from '../../constants';
 import { Expression, ExpressionBase } from '../expression-base';
+import { TooFewOperandsError } from '../../shared';
 
 /**
  * ResourceIdExpression
@@ -7,7 +7,7 @@ import { Expression, ExpressionBase } from '../expression-base';
 export class ResourceIdExpression extends ExpressionBase {
     evaluate(): string {
         if (this._operands.length < 2) {
-            throw new Error(ExpressionErrors.TOO_FEW_OPERANDS);
+            throw new TooFewOperandsError();
         }
 
         let resourceId = '';
@@ -20,9 +20,8 @@ export class ResourceIdExpression extends ExpressionBase {
         // Please note that subscriptionId and resourceGroupName are optional operands
         for (let operand of this.operands) {
             resourceId += '/';
-            resourceId += typeof operand === 'string'
-                ? <string>operand
-                : (<Expression>operand).evaluate();
+            resourceId += operand instanceof ExpressionBase
+                ? (<Expression>operand).evaluate() : <string>operand;
         }
 
         return resourceId;

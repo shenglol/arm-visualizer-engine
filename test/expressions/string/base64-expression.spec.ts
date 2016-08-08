@@ -1,10 +1,7 @@
 import { expect } from 'chai';
 
-import {
-    ExpressionErrors,
-    Expression,
-    Base64Expression
-} from '../../../src';
+import { Expression, Base64Expression } from '../../../src';
+import { TooFewOperandsError, TooManyOperandsError } from '../../../src';
 
 describe('Base64Expression', () => {
     let exp: Expression;
@@ -17,7 +14,7 @@ describe('Base64Expression', () => {
         it('should throw no operand specified error when no operand present', () => {
             expect(() => {
                 exp.evaluate();
-            }).to.throw(ExpressionErrors.TOO_FEW_OPERANDS);
+            }).to.throw(TooFewOperandsError);
         });
 
         it('should throw too many operands specified error when more than one operand present', () => {
@@ -26,7 +23,7 @@ describe('Base64Expression', () => {
 
             expect(() => {
                 exp.evaluate();
-            }).to.throw(ExpressionErrors.TOO_MANY_OPERANDS);
+            }).to.throw(TooManyOperandsError);
         });
 
         it('should return the base64 representation of the raw string', () => {

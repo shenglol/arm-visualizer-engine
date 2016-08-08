@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 
-import { ExpressionErrors, ConcatExpression } from '../../../src';
+import { ConcatExpression } from '../../../src';
+import { InvalidOperandTypeError } from '../../../src';
 
 describe('ConcatExpression', () => {
     describe('evaluate()', () => {
@@ -12,7 +13,7 @@ describe('ConcatExpression', () => {
 
             expect(() => {
                 exp.evaluate();
-            }).to.throw(ExpressionErrors.INVALID_OPERAND_TYPE);
+            }).to.throw(InvalidOperandTypeError);
         });
 
         it('should combine multiple strings', () => {

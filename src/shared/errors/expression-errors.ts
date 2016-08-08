@@ -13,8 +13,8 @@ export class TooManyOperandsError extends Error {
 }
 
 export class InvalidOperandTypeError extends Error {
-    constructor() {
-        super(ErrorMessages.INVALID_OPERAND_TYPE);
+    constructor(operand: string) {
+        super(ErrorMessages.INVALID_OPERAND_TYPE + ': ' + operand);
     }
 }
 

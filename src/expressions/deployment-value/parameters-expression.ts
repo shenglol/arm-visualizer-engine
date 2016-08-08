@@ -1,6 +1,11 @@
-import { ExpressionErrors } from '../../constants';
-import { Expression, ContextualExpressionBase } from '../expression-base';
+import { Expression, ExpressionBase, ContextualExpressionBase } from '../expression-base';
 import { Parameters, Template } from '../../template';
+import {
+    TooFewOperandsError,
+    TooManyOperandsError,
+    ExpContextNotFoundError,
+    PropertyNotFoundError
+} from '../../shared';
 
 /**
  * ParametersExpression
@@ -9,51 +14,55 @@ export class ParametersExpression extends ContextualExpressionBase {
     evaluate(): string | Object | any[] {
 
         if (this._operands.length === 0) {
-            throw new Error(ExpressionErrors.TOO_FEW_OPERANDS);
+            throw new TooFewOperandsError();
         }
         if (this._operands.length > 1) {
-            throw new Error(ExpressionErrors.TOO_MANY_OPERANDS);
+            throw new TooManyOperandsError();
         }
 
         let parameters = this.engine.template.parameters;
 
         if (!parameters) {
-            throw new Error(ExpressionErrors.NO_CONTEXT + ': parameters');
+            throw new ExpContextNotFoundError('parameters');
         }
 
-        let key: string = typeof this.operands[0] === 'string'
-            ? <string>this.operands[0]
-            : <string>(<Expression>this.operands[0]).evaluate();
+        let operand = this.operands[0];
+        let paramName: string = operand instanceof ExpressionBase
+            ? <string>operand.evaluate() : <string>operand;
 
-        if (!(key in parameters)) {
-            throw new Error(ExpressionErrors.NO_KEY_FOUND + ': ' + key);
+        if (!(paramName in parameters)) {
+            throw new PropertyNotFoundError(paramName);
         }
 
-        let parameter = parameters[key];
-        let value = parameter.value || parameter.defaultValue;
+        let parameter = parameters[paramName].value || parameters[paramName].defaultValue;
 
-        if (!value && value !== '') {
-            return "parameters('" + key + "')";
+        if (!parameter && parameter !== '') {
+            return "parameters('" + paramName + "')";
         }
 
-        if (typeof value === 'string') {
-            return this.engine.resolveExpression(value);
+        // parameter can be another expression
+        if (typeof parameter === 'string') {
+            return this.engine.resolveExpression(parameter);
         }
 
-        if (typeof value === 'object') {
+        if (typeof parameter === 'object') {
             for (let prop of this.properties) {
-                let key = typeof prop === 'string' || typeof prop === 'number'
-                    ? prop : <string | number>prop.evaluate();
-                value = (<any>value)[key];
+                prop = prop instanceof ExpressionBase ? <string | number>prop.evaluate() : prop;
+                parameter = (<any>parameter)[<string | number>prop];
+
+                if (!parameter) {
+                    throw new PropertyNotFoundError(<string>prop);
+                }
             }
 
-            if (typeof value === 'string') {
-                return this.engine.resolveExpression(value);
+            // parameter can be another expression
+            if (typeof parameter === 'string') {
+                return this.engine.resolveExpression(parameter);
             }
 
-            return value;
+            return parameter;
         }
 
-        return value;
+        return parameter;
     }
 }

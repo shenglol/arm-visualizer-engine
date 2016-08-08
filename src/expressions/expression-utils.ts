@@ -1,8 +1,7 @@
-import { ExpressionErrors } from '../constants';
 import { ExpressionTypes } from './expression-types';
 
 export class ExpressionUtils {
-    // TODO: Create a validator
+    // TODO: a separate validator
     static isValid(source: string): boolean {
         let open: string = '[(';
         let closed: string = '])';

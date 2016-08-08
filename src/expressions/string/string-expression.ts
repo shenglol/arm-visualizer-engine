@@ -1,22 +1,22 @@
-import { ExpressionErrors } from '../../constants';
 import { Expression, ExpressionBase } from '../expression-base';
+import { TooFewOperandsError, TooManyOperandsError } from '../../shared';
 
 /**
  * StringExpression
  */
 export class StringExpression extends ExpressionBase {
   evaluate(): string {
-    if (this._operands.length === 0) {
-      throw new Error(ExpressionErrors.TOO_FEW_OPERANDS);
+    if (this.operands.length === 0) {
+      throw new TooFewOperandsError();
     }
-    if (this._operands.length > 1) {
-      throw new Error(ExpressionErrors.TOO_MANY_OPERANDS);
-    }
-
-    if (typeof this._operands[0] === 'string') {
-      return <string>this._operands[0];
+    if (this.operands.length > 1) {
+      throw new TooManyOperandsError();
     }
 
-    return JSON.stringify((<Expression>this._operands[0]).evaluate());
+    if (this.operands[0] instanceof ExpressionBase) {
+        return JSON.stringify((<Expression>this.operands[0]).evaluate());
+    }
+
+    return (<string | number>this.operands[0]).toString();
   }
 }

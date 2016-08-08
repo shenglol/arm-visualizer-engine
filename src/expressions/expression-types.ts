@@ -4,5 +4,5 @@
 export enum ExpressionTypes {
     Expression,
     String,
-    Number,
+    Number
 }

@@ -1,4 +1,4 @@
-import { ExpressionErrors } from '../constants';
+import { InvalidExpSourceError } from '../shared';
 import { Expression } from './expression-base';
 import { ExpressionTypes } from './expression-types';
 import { ExpressionBuilder } from './expression-builder';
@@ -20,7 +20,7 @@ export class ExpressionParser {
         }
 
         if (!ExpressionUtils.isValid(source)) {
-            throw new Error(ExpressionErrors.INVALID_SOURCE);
+            throw new InvalidExpSourceError();
         }
 
         if (ExpressionUtils.getType(source) !== ExpressionTypes.Expression) {

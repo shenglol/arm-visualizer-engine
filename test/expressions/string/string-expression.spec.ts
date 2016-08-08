@@ -1,11 +1,7 @@
 import { expect } from 'chai';
 
-import {
-    ExpressionErrors,
-    Expression,
-    ExpressionBase,
-    StringExpression
-} from '../../../src';
+import { Expression, ExpressionBase, StringExpression } from '../../../src';
+import { TooFewOperandsError, TooManyOperandsError } from '../../../src';
 
 class ObjectExpression extends ExpressionBase {
     evaluate(): Object {
@@ -33,7 +29,7 @@ describe('StringExpression', () => {
         it('should throw no operand specified error when no operand present', () => {
             expect(() => {
                 exp.evaluate();
-            }).to.throw(ExpressionErrors.TOO_FEW_OPERANDS);
+            }).to.throw(TooFewOperandsError);
         });
 
         it('should throw too many operands specified error when more than one operand present', () => {
@@ -42,7 +38,7 @@ describe('StringExpression', () => {
 
             expect(() => {
                 exp.evaluate();
-            }).to.throw(ExpressionErrors.TOO_MANY_OPERANDS);
+            }).to.throw(TooManyOperandsError);
         });
 
         it('should convert a string to string', () => {
