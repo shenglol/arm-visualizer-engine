@@ -1,5 +1,4 @@
 import { Expression, ExpressionBase, ContextualExpressionBase } from '../expression-base';
-import { Parameters, Template } from '../../template';
 import {
     TooFewOperandsError,
     TooManyOperandsError,

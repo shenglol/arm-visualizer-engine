@@ -2,7 +2,7 @@ import { InvalidExpSourceError } from '../shared';
 import { Expression } from './expression-base';
 import { ExpressionTypes } from './expression-types';
 import { ExpressionBuilder } from './expression-builder';
-import { ExpressionUtils } from './expression-utils';
+import { ExpressionUtils } from '../shared';
 import { TemplateEngine } from '../template';
 
 export class ExpressionParser {

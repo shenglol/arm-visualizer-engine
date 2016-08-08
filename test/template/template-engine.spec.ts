@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import { TemplateErrors, TemplateEngine } from '../../src';
+import { TemplateEngine } from '../../src';
 
 describe('TemplateEngine', () => {
     let engine: TemplateEngine;

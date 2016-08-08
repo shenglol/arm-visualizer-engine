@@ -1,10 +1,9 @@
 import { expect } from 'chai';
 
 import {
-    ExpressionErrors,
     ExpressionUtils,
     ExpressionTypes
-} from '../../src';
+} from '../../../src';
 
 describe('ExpressionUtils', () => {
     describe('isValid()', () => {

@@ -1,5 +1,5 @@
 import * as Expressions from './expressions';
-import { ExpressionUtils } from './expression-utils';
+import { ExpressionUtils } from '../shared';
 import { Expression } from './expression-base';
 import { ExpressionTypes } from './expression-types';
 import { TemplateEngine } from '../template';

@@ -1,11 +1,10 @@
 import { expect } from 'chai';
 
 import {
-    ExpressionErrors,
     Expression,
     ContextualExpressionBase,
     ExpressionBuilder,
-    ExpressionParser,
+    ExpressionParser
 } from '../../src';
 
 describe('ExpressionBuilder', () => {

@@ -1,4 +1,4 @@
-import { ExpressionTypes } from './expression-types';
+import { ExpressionTypes } from '../../expressions/expression-types';
 
 export class ExpressionUtils {
     // TODO: a separate validator
