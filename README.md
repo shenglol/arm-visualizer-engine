@@ -9,7 +9,7 @@ npm install arm-visualizer-engine --save
 
 ## Examples
 
-### Resolve all resources
+### get all resources
 
 ```js
 import { TemplateEngine } from 'arm-visualizer-engine';
@@ -37,7 +37,7 @@ engine.loadTemplate(`{
     ]
 }`);
 
-console.log(engine.resolveAllResources()); // [resourceA, resourceB, resourceC];
+console.log(engine.getAllResources()); // [resourceA, resourceB, resourceC];
 ```
 
 ### Resolve an expression in template
@@ -62,7 +62,7 @@ engine.loadTemplate(`{
 console.log(engine.resolveExpression("[parameters('username')]"));  // 'foo'
 ```
 
-### Resolve resourse dependencies
+### Get dependencies of a resource
 
 ```js
 import { Resource, ARMTemplate } from 'arm-visualizer-engine';
@@ -97,7 +97,7 @@ engine.load(`{
     ]
 }`);
 
-let dependencies = engine.resolveDependencies(engine.template.resources[0]);
+let dependencies = engine.getDependencies(engine.template.resources[0]);
 console.log(dependencies[0]);   // resourceA
 console.log(dependencies[1]);   // resourceB
 
