@@ -9,32 +9,45 @@ npm install arm-visualizer-engine --save
 
 ## Examples
 
-### Load a template
+### Resolve all resources
 
 ```js
-import { ARMTemplate } from 'arm-visualizer-engine';
+import { TemplateEngine } from 'arm-visualizer-engine';
 
-let template = new ARMTemplate();
-template.load(`{
+let engine = new TemplateEngine();
+engine.loadTemplate(`{
     "$schema": "",
     "contentVersion": "",
     "parameters": {},
-    "resources": [{
-        "name": "resourceA" 
-    }]
+    "resources": [
+        {
+            ...
+            "name": "resourceA",
+            "resources": [
+                {
+                    ...
+                    "name": "resourceB"
+                }
+            ]
+        },
+        {
+            ...
+            "name": "resourceC",
+        }
+    ]
 }`);
 
-console.log(template.resources[0]); // { "name": "resourceA" }
+console.log(engine.resolveAllResources()); // [resourceA, resourceB, resourceC];
 ```
 
-### Parse an expression
+### Resolve an expression in template
 
 
 ```js
-import { ARMTemplate } from 'arm-visualizer-engine';
+import { TemplateEngine } from 'arm-visualizer-engine';
 
-let template = new ARMTemplate();
-template.load(`{
+let engine = new TemplateEngine();
+engine.loadTemplate(`{
     "$schema": "",
     "contentVersion": "",
     "parameters": {
@@ -46,45 +59,47 @@ template.load(`{
     "resources": []
 }`);
 
-console.log(template.parser.parse("[parameters('username')]"));  // 'foo'
+console.log(engine.resolveExpression("[parameters('username')]"));  // 'foo'
 ```
 
-### Resolve dependencies
+### Resolve resourse dependencies
 
 ```js
 import { Resource, ARMTemplate } from 'arm-visualizer-engine';
 
-let template = new ARMTemplate();
-template.load(`{
+let engine = new TemplateEngine();
+engine.load(`{
     "$schema": "",
     "contentVersion": "",
     "parameters": {},
     "resources": [
         {
-            ...,
-            name: "resourceA",
-            type: "typeA",
-            dependsOn: [
-                "[concat('typeB', 'resourceB')]"
-                "[resourceId('typeC', 'resourceC')]"
+            "name": "resourceA",
+            "type": "typeA",
+            ...
+            "resources": [
+                {
+                    "name": "resourceB",
+                    "type": "typeB",
+                    ...
+                }
             ]
         },
         {
-            ...,
-            name: "resourceB",
-            type: "typeB"
+            "name": "resourceC",
+            "type": "typeC",
+            ...
+            "dependsOn": [
+                "[resourceId('typeA', 'resourceA')]",
+                "[concat('typeA', 'resourceA', 'typeB', 'resourceB')]"
+            ]
         },
-        {
-            ...,
-            name: "resourceC",
-            type: "typeC"
-        }
     ]
 }`);
 
-let dependencies = template.resolveDependencies(template.resources[0]);
-console.log(dependencies[0]); // resourceB
-console.log(dependencies[1]); // resourceC
+let dependencies = engine.resolveDependencies(engine.template.resources[0]);
+console.log(dependencies[0]);   // resourceA
+console.log(dependencies[1]);   // resourceB
 
 ```
 
