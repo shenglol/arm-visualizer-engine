@@ -10,12 +10,12 @@ import {
 } from '../shared';
 
 const defaultTemplate: Template = {
-   $schema: "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-   contentVersion: "",
-   parameters: {},
-   variables: {},
-   resources: [],
-   outputs: {}
+    $schema: "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    contentVersion: "",
+    parameters: {},
+    variables: {},
+    resources: [],
+    outputs: {}
 };
 
 export class TemplateEngine {
@@ -25,11 +25,15 @@ export class TemplateEngine {
     private parser: ExpressionParser;
 
     get template(): Template {
+        if (!this._template) {
+            return defaultTemplate;
+        }
+
         return this._template;
     }
 
     get templateData(): string {
-        if (this.template) {
+        if (this._template) {
             this._templateData = JSON.stringify(this.template, null, 2);
         }
 
@@ -74,12 +78,7 @@ export class TemplateEngine {
         }
     }
 
-    resolveAllResources(): Resource[] {
-        if (!this.template) {
-            return [];
-        }
-
-        // TODO: copyIndex();
+    getAllResources(): Resource[] {
         let resources: Resource[] = [];
 
         for (let resource of this.template.resources) {
@@ -90,7 +89,7 @@ export class TemplateEngine {
         return resources;
     }
 
-    resolveDependencies(resource: Resource): Resource[] {
+    getDependencies(resource: Resource): Resource[] {
         if (!resource.dependsOn) {
             return [];
         }

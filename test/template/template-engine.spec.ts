@@ -43,7 +43,7 @@ describe('TemplateEngine', () => {
         });
     });
 
-    describe('loadTemplate', () => {
+    describe('templateData', () => {
         it('should return engine JSON string', () => {
             let data = `{
                 "$schema": "",
@@ -60,7 +60,7 @@ describe('TemplateEngine', () => {
         });
     });
 
-    describe('resolveAllResources', () => {
+    describe('getAllResources', () => {
         it('should return all engine resources', () => {
             let data = `{
                 "$schema": "",
@@ -114,11 +114,11 @@ describe('TemplateEngine', () => {
 
             engine.loadTemplate(data);
 
-            expect(engine.resolveAllResources().length).to.equal(7);
+            expect(engine.getAllResources().length).to.equal(7);
         });
     });
 
-    describe('resolveDependencies()', () => {
+    describe('getDependencies()', () => {
         it('should resolve resource dependencies', () => {
             let data = `{
                 "$schema": "",
@@ -147,7 +147,7 @@ describe('TemplateEngine', () => {
             }`;
 
             engine.loadTemplate(data);
-            let dependencies = engine.resolveDependencies(engine.template.resources[0]);
+            let dependencies = engine.getDependencies(engine.template.resources[0]);
 
             expect(dependencies[0]).to.eql(engine.template.resources[1]);
             expect(dependencies[1]).to.eql(engine.template.resources[2]);
@@ -196,7 +196,7 @@ describe('TemplateEngine', () => {
             }`;
 
             engine.loadTemplate(data);
-            let dependencies = engine.resolveDependencies(engine.template.resources[1]);
+            let dependencies = engine.getDependencies(engine.template.resources[1]);
 
             expect(dependencies[0]).to.eql(engine.template.resources[0]);
             expect(dependencies[1]).to.eql(engine.template.resources[0].resources[0]);
