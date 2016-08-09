@@ -34,8 +34,8 @@ export class ExpressionBuilder {
         return exp;
     }
 
-    private buildOperands(operandsSource: string): (Expression | string)[] {
-        let operands: (Expression | string)[] = [];
+    private buildOperands(operandsSource: string): (Expression | string | number)[] {
+        let operands: (Expression | string | number)[] = [];
         let buffer = '';
         let count = 0;
 
@@ -58,6 +58,8 @@ export class ExpressionBuilder {
                         buffer = ExpressionUtils.truncate(buffer);
                         if (ExpressionUtils.getType(buffer) === ExpressionTypes.Expression) {
                             operands.push(this.buildExpression(buffer));
+                        } else if (ExpressionUtils.getType(buffer) === ExpressionTypes.Number) {
+                            operands.push(+buffer);
                         } else {
                             operands.push(buffer);
                         }
@@ -85,8 +87,8 @@ export class ExpressionBuilder {
         return operands;
     }
 
-    private buildProperties(propsSource: string): (Expression | string)[] {
-        let props: (Expression | string)[] = [];
+    private buildProperties(propsSource: string): (Expression | string | number)[] {
+        let props: (Expression | string | number)[] = [];
         let buffer = '';
         let count = 0;
 
@@ -118,7 +120,13 @@ export class ExpressionBuilder {
                 case CLOSED_SQURE_BRACKET:
                     count--;
                     if (count === 0) {
-                        props.push(this.buildExpression(buffer));
+                        if (ExpressionUtils.getType(buffer) === ExpressionTypes.Expression) {
+                            props.push(this.buildExpression(buffer));
+                        } else if (ExpressionUtils.getType(buffer) === ExpressionTypes.Number) {
+                            props.push(+buffer);
+                        } else {
+                            props.push(buffer);
+                        }
                         buffer = '';
                     } else {
                         buffer += ch;

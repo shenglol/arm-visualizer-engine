@@ -57,5 +57,15 @@ describe('ExpressionBuilder', () => {
 
             expect(exp.toString()).to.equal(source);
         });
+
+        it('should build an expression with number type operand', () => {
+            let source = "concat(1, '2').foo[3].bar";
+            let exp = builder.buildExpression(source);
+
+            expect(exp.toString()).to.equal(source);
+            expect(exp.operands[0]).to.equal(1);
+            expect(exp.operands[1]).to.equal('2');
+            expect(exp.properties[1]).to.equal(3);
+        })
     });
 });
