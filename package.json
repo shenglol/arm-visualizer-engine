@@ -1,6 +1,6 @@
 {
   "name": "arm-visualizer-engine",
-  "version": "0.0.9",
+  "version": "0.0.11",
   "description": "A tool to load, resolve and edit Azure Resource Manager Templates",
   "license": "Apache-2.0",
   "author": {
