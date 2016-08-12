@@ -3,13 +3,14 @@ import { Template } from './template';
 import { ExpressionBuilder } from '../expressions';
 import { ExpressionParser } from '../expressions';
 import { ErrorManager } from '../shared';
+import { defaultTemplate } from './default-template';
 import {
     MissingTemplatePropertyError,
     DependencyNotFoundError,
     DuplicateDependenciesError
 } from '../shared';
 
-const defaultTemplate: Template = {
+export const emptyTemplate: Template = {
     $schema: "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     contentVersion: "",
     parameters: {},
@@ -26,7 +27,7 @@ export class TemplateEngine {
 
     get template(): Template {
         if (!this._template) {
-            return defaultTemplate;
+            return emptyTemplate;
         }
 
         return this._template;

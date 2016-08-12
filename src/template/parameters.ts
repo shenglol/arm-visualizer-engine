@@ -9,5 +9,6 @@ export interface Parameters {
         minLength?: number;
         maxLength?: number;
         description?: string;
+        metadata?: any;
     };
 }
