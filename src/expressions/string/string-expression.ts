@@ -14,7 +14,7 @@ export class StringExpression extends ExpressionBase {
     }
 
     if (this.operands[0] instanceof ExpressionBase) {
-        return JSON.stringify((<Expression>this.operands[0]).evaluate());
+      return JSON.stringify((<Expression>this.operands[0]).evaluate());
     }
 
     return (<string | number>this.operands[0]).toString();

@@ -9,11 +9,11 @@ export class ConcatExpression extends ExpressionBase {
     let result = '';
 
     for (let operand of this._operands) {
-        if (typeof operand === 'number') {
-            throw new InvalidOperandTypeError(operand.toString());
-        } else {
-            result += typeof operand === 'string' ? operand : operand.evaluate();
-        }
+      if (typeof operand === 'number') {
+        throw new InvalidOperandTypeError(operand.toString());
+      } else {
+        result += typeof operand === 'string' ? operand : operand.evaluate();
+      }
     }
 
     return result;

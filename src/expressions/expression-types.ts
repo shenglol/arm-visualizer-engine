@@ -2,7 +2,7 @@
  * Expression types enum.
  */
 export enum ExpressionTypes {
-    Expression,
-    String,
-    Number
+  Expression,
+  String,
+  Number
 }

@@ -1,3 +1,3 @@
 export interface Variables {
-    [variableName: string]: string | Object;
+  [variableName: string]: string | Object;
 }

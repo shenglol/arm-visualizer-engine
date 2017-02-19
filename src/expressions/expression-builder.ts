@@ -17,174 +17,174 @@ const CLOSED_SQURE_BRACKET = ']';
  * Build expression from an expression source string
  */
 export class ExpressionBuilder {
-    constructor(private engine: TemplateEngine) { }
+  constructor(private engine: TemplateEngine) { }
 
-    buildExpression(source: string): Expression {
-        let openIndex = this.getOpenIndex(source);
-        let closedIndex = this.getClosedIndex(source);
+  buildExpression(source: string): Expression {
+    let openIndex = this.getOpenIndex(source);
+    let closedIndex = this.getClosedIndex(source);
 
-        let expName = this.getExpressionName(source, openIndex);
-        let operandsSource = this.getOperandsSource(source, openIndex, closedIndex);
-        let propsSource = this.getPropsSourrce(source, closedIndex);
+    let expName = this.getExpressionName(source, openIndex);
+    let operandsSource = this.getOperandsSource(source, openIndex, closedIndex);
+    let propsSource = this.getPropsSourrce(source, closedIndex);
 
-        let exp: Expression = new (<any>Expressions)[expName](this.engine);
-        exp.operands = this.buildOperands(operandsSource);
-        exp.properties = this.buildProperties(propsSource);
+    let exp: Expression = new (<any>Expressions)[expName](this.engine);
+    exp.operands = this.buildOperands(operandsSource);
+    exp.properties = this.buildProperties(propsSource);
 
-        return exp;
-    }
+    return exp;
+  }
 
-    private buildOperands(operandsSource: string): (Expression | string | number)[] {
-        let operands: (Expression | string | number)[] = [];
-        let buffer = '';
-        let count = 0;
+  private buildOperands(operandsSource: string): (Expression | string | number)[] {
+    let operands: (Expression | string | number)[] = [];
+    let buffer = '';
+    let count = 0;
 
-        for (let ch of operandsSource) {
-            switch (ch) {
-                case OPEN_BRACKET:
-                case OPEN_SQURE_BRACKET:
-                    count++;
-                    buffer += ch;
-                    break;
+    for (let ch of operandsSource) {
+      switch (ch) {
+        case OPEN_BRACKET:
+        case OPEN_SQURE_BRACKET:
+          count++;
+          buffer += ch;
+          break;
 
-                case CLOSED_BRACKET:
-                case CLOSED_SQURE_BRACKET:
-                    count--;
-                    buffer += ch;
-                    break;
+        case CLOSED_BRACKET:
+        case CLOSED_SQURE_BRACKET:
+          count--;
+          buffer += ch;
+          break;
 
-                case COMMA:
-                    if (count === 0) {
-                        buffer = ExpressionUtils.truncate(buffer);
-                        if (ExpressionUtils.getType(buffer) === ExpressionTypes.Expression) {
-                            operands.push(this.buildExpression(buffer));
-                        } else if (ExpressionUtils.getType(buffer) === ExpressionTypes.Number) {
-                            operands.push(+buffer);
-                        } else {
-                            operands.push(buffer);
-                        }
-                        buffer = '';
-                    } else {
-                        buffer += ch;
-                    }
-                    break;
-
-                default:
-                    buffer += ch;
-                    break;
-            }
-        }
-
-        if (buffer.length > 0) {
+        case COMMA:
+          if (count === 0) {
             buffer = ExpressionUtils.truncate(buffer);
             if (ExpressionUtils.getType(buffer) === ExpressionTypes.Expression) {
-                operands.push(this.buildExpression(buffer));
+              operands.push(this.buildExpression(buffer));
+            } else if (ExpressionUtils.getType(buffer) === ExpressionTypes.Number) {
+              operands.push(+buffer);
             } else {
-                operands.push(buffer);
+              operands.push(buffer);
             }
-        }
+            buffer = '';
+          } else {
+            buffer += ch;
+          }
+          break;
 
-        return operands;
+        default:
+          buffer += ch;
+          break;
+      }
     }
 
-    private buildProperties(propsSource: string): (Expression | string | number)[] {
-        let props: (Expression | string | number)[] = [];
-        let buffer = '';
-        let count = 0;
+    if (buffer.length > 0) {
+      buffer = ExpressionUtils.truncate(buffer);
+      if (ExpressionUtils.getType(buffer) === ExpressionTypes.Expression) {
+        operands.push(this.buildExpression(buffer));
+      } else {
+        operands.push(buffer);
+      }
+    }
 
-        for (let ch of propsSource) {
-            switch (ch) {
-                case DOT:
-                    if (count === 0) {
-                        if (buffer.length > 0) {
-                            props.push(buffer);
-                            buffer = '';
-                        }
-                    } else {
-                        buffer += ch;
-                    }
-                    break;
+    return operands;
+  }
 
-                case OPEN_SQURE_BRACKET:
-                    count++;
-                    if (count === 1) {
-                        if (buffer.length > 0) {
-                            props.push(buffer);
-                        }
-                        buffer = '';
-                    } else {
-                        buffer += ch;
-                    }
-                    break;
+  private buildProperties(propsSource: string): (Expression | string | number)[] {
+    let props: (Expression | string | number)[] = [];
+    let buffer = '';
+    let count = 0;
 
-                case CLOSED_SQURE_BRACKET:
-                    count--;
-                    if (count === 0) {
-                        if (ExpressionUtils.getType(buffer) === ExpressionTypes.Expression) {
-                            props.push(this.buildExpression(buffer));
-                        } else if (ExpressionUtils.getType(buffer) === ExpressionTypes.Number) {
-                            props.push(+buffer);
-                        } else {
-                            props.push(buffer);
-                        }
-                        buffer = '';
-                    } else {
-                        buffer += ch;
-                    }
-                    break;
-
-                default:
-                    buffer += ch;
-                    break;
+    for (let ch of propsSource) {
+      switch (ch) {
+        case DOT:
+          if (count === 0) {
+            if (buffer.length > 0) {
+              props.push(buffer);
+              buffer = '';
             }
-        }
+          } else {
+            buffer += ch;
+          }
+          break;
 
-        if (buffer.length > 0) {
-            props.push(buffer);
-        }
-
-        return props;
-    }
-
-    private getOpenIndex(source: string) {
-        return source.indexOf('(');
-    }
-
-    private getClosedIndex(source: string) {
-        let count = 0;
-
-        for (let index = 0; index < source.length; index++) {
-            let ch = source[index];
-            if (ch === '(') {
-                count++;
+        case OPEN_SQURE_BRACKET:
+          count++;
+          if (count === 1) {
+            if (buffer.length > 0) {
+              props.push(buffer);
             }
-            if (ch === ')') {
-                count--;
-                if (count === 0) {
-                    return index;
-                }
+            buffer = '';
+          } else {
+            buffer += ch;
+          }
+          break;
+
+        case CLOSED_SQURE_BRACKET:
+          count--;
+          if (count === 0) {
+            if (ExpressionUtils.getType(buffer) === ExpressionTypes.Expression) {
+              props.push(this.buildExpression(buffer));
+            } else if (ExpressionUtils.getType(buffer) === ExpressionTypes.Number) {
+              props.push(+buffer);
+            } else {
+              props.push(buffer);
             }
+            buffer = '';
+          } else {
+            buffer += ch;
+          }
+          break;
+
+        default:
+          buffer += ch;
+          break;
+      }
+    }
+
+    if (buffer.length > 0) {
+      props.push(buffer);
+    }
+
+    return props;
+  }
+
+  private getOpenIndex(source: string) {
+    return source.indexOf('(');
+  }
+
+  private getClosedIndex(source: string) {
+    let count = 0;
+
+    for (let index = 0; index < source.length; index++) {
+      let ch = source[index];
+      if (ch === '(') {
+        count++;
+      }
+      if (ch === ')') {
+        count--;
+        if (count === 0) {
+          return index;
         }
-
-        return -1;
+      }
     }
 
-    private getExpressionName(source: string, openIndex: number) {
-        let operator = source.substring(0, openIndex);
-        let expName = operator[0].toUpperCase() + operator.substring(1) + 'Expression';
+    return -1;
+  }
 
-        return expName;
-    }
+  private getExpressionName(source: string, openIndex: number) {
+    let operator = source.substring(0, openIndex);
+    let expName = operator[0].toUpperCase() + operator.substring(1) + 'Expression';
 
-    private getOperandsSource(source: string, openIndex: number, closedIndex: number) {
-        let operandsSource = source.substring(openIndex + 1, closedIndex);
+    return expName;
+  }
 
-        return operandsSource ? operandsSource : '';
-    }
+  private getOperandsSource(source: string, openIndex: number, closedIndex: number) {
+    let operandsSource = source.substring(openIndex + 1, closedIndex);
 
-    private getPropsSourrce(source: string, closedIndex: number) {
-        let propsSource = source.substring(closedIndex + 1);
+    return operandsSource ? operandsSource : '';
+  }
 
-        return propsSource ? propsSource : '';
-    }
+  private getPropsSourrce(source: string, closedIndex: number) {
+    let propsSource = source.substring(closedIndex + 1);
+
+    return propsSource ? propsSource : '';
+  }
 }

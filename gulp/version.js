@@ -22,7 +22,7 @@ function inc(importance) {
   // get all the files to bump version in
   return gulp.src(['./package.json'])
     // bump the version number in those files
-    .pipe(bump({type: importance}))
+    .pipe(bump({ type: importance }))
     // save it back to filesystem
     .pipe(gulp.dest('./'))
     // commit the changed version number
@@ -34,15 +34,15 @@ function inc(importance) {
 }
 
 function patch() {
-    return inc('patch');
+  return inc('patch');
 }
 
 function feature() {
-    return inc('minor');
+  return inc('minor');
 }
 
 function release() {
-    return inc('major');
+  return inc('major');
 }
 
 gulp.task('version:patch', patch);
