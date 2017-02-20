@@ -1,48 +1,48 @@
 'use strict';
 
 module.exports = function (config) {
-    var tsify = require('tsify');
-    var configuration = {
-        basePath: '',
+  var tsify = require('tsify');
+  var configuration = {
+    basePath: '',
 
-        autoWatch: false,
+    autoWatch: false,
 
-        singleRun: true,
+    singleRun: true,
 
-        colors: true,
+    colors: true,
 
-        concurrency: Infinity,
+    concurrency: Infinity,
 
-        logLevel: config.LOG_INFO,
+    logLevel: config.LOG_INFO,
 
-        frameworks: ['mocha', 'chai', 'browserify'],
+    frameworks: ['mocha', 'chai', 'browserify'],
 
-        reporters: ['mocha'],
+    reporters: ['mocha'],
 
-        mochaReporter: {
-            showDiff: true,
-        },
+    mochaReporter: {
+      showDiff: true,
+    },
 
-        files: [
-            '../typings/index.d.ts',
-            '../src/**/*.ts',
-            '../test/**/*.ts'
-        ],
+    files: [
+      '../typings/index.d.ts',
+      '../src/**/*.ts',
+      '../test/**/*.ts'
+    ],
 
-        preprocessors: {
-            '../typings/index.d.ts': ['browserify'],
-            '../src/**/*.ts': ['browserify'],
-            '../test/**/*.ts': ['browserify']
-        },
+    preprocessors: {
+      '../typings/index.d.ts': ['browserify'],
+      '../src/**/*.ts': ['browserify'],
+      '../test/**/*.ts': ['browserify']
+    },
 
-        browsers: ['PhantomJS'],
+    browsers: ['PhantomJS'],
 
-        browserify: {
-            debug: true,
-            plugin: [tsify],
-            extensions: ['.ts', '.js']
-        }
-    };
+    browserify: {
+      debug: true,
+      plugin: [tsify],
+      extensions: ['.ts', '.js']
+    }
+  };
 
-    config.set(configuration);
+  config.set(configuration);
 };
