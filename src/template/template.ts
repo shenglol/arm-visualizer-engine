@@ -1,7 +1,7 @@
-import { Parameters } from './Parameters';
-import { Variables } from './Variables';
-import { Resource } from './Resource';
-import { Outputs } from './Outputs';
+import { Parameters } from './parameters';
+import { Variables } from './variables';
+import { Resource } from './resource';
+import { Outputs } from './outputs';
 
 export interface Template {
   $schema: string;
