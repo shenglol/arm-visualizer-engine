@@ -1,5 +1,7 @@
-import { Expression, ExpressionBase } from '../../src';
+import "mocha";
 import { expect } from 'chai';
+
+import { Expression, ExpressionBase } from '../../src';
 
 class MockExpression extends ExpressionBase {
   evaluate(): string {

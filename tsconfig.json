@@ -1,14 +1,19 @@
 {
   "compilerOptions": {
     "declaration": true,
+    "module": "commonjs",
     "target": "es5",
     "moduleResolution": "node",
     "noImplicitAny": true,
+    "outDir": "./lib",
     "preserveConstEnums": true,
     "removeComments": true
   },
+  "include": [
+    "src/**/*"
+  ],
   "exclude": [
     "node_modules",
-    "typings/globals"
+    "**/*-spec.ts"
   ]
 }

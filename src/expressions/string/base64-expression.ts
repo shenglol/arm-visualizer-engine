@@ -1,3 +1,5 @@
+/// <reference types="@types/node" />
+
 import { Expression, ExpressionBase } from '../expression-base';
 import { TooFewOperandsError, TooManyOperandsError } from '../../shared';
 

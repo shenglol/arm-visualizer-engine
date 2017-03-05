@@ -1,3 +1,4 @@
+import "mocha"
 import { expect } from 'chai';
 
 import { ExpressionBuilder, ExpressionParser, InvalidExpSourceError } from '../../src';
