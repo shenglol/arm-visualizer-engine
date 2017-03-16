@@ -32,7 +32,12 @@
     "prebuild": "npm run clean",
     "pretest": "npm run build"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@types/lodash": "^4.14.54",
+    "@types/pegjs": "^0.10.0",
+    "lodash": "^4.17.4",
+    "pegjs": "^0.10.0"
+  },
   "devDependencies": {
     "@types/chai": "^3.0.0",
     "@types/mocha": "^2.0.0",
