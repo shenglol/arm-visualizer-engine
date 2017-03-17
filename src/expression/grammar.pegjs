@@ -19,53 +19,50 @@
     /* Literals */
     IntegerLiteral: 1,
     StringLiteral: 2,
-    SecureStringLiteral: 3,
-    BooleanLiteral: 4,
-    ObjectLiteral: 5,
-    SecureObjectLiteral: 6,
-    ArrayLiteral: 7,
+    ObjectLiteral: 3,
+    ArrayLiteral: 4,
 
     /* Integer Functions */
-    AddFunction: 8,
-    CopyIndexFunction: 9,
-    DivFunction: 10,
-    IntFunction: 11,
-    ModFunction: 12,
-    MulFunction: 13,
-    SubFunction: 14,
+    AddFunction: 5,
+    CopyIndexFunction: 6,
+    DivFunction: 7,
+    IntFunction: 8,
+    ModFunction: 9,
+    MulFunction: 10,
+    SubFunction: 11,
 
     /* String Functions */
-    Base64Function: 15,
-    PadLeftFunction: 16,
-    ReplaceFunction: 17,
-    SplitFunction: 18,
-    StringFunction: 19,
-    SubstringFunction: 20,
-    ToLowerFunctions: 21,
-    ToUpperFunctions: 22,
-    TrimFunction: 23,
-    UniqueStringFunction: 24,
-    UriFunction: 25,
+    Base64Function: 12,
+    PadLeftFunction: 13,
+    ReplaceFunction: 14,
+    SplitFunction: 15,
+    StringFunction: 16,
+    SubstringFunction: 17,
+    ToLowerFunctions: 18,
+    ToUpperFunctions: 19,
+    TrimFunction: 20,
+    UniqueStringFunction: 21,
+    UriFunction: 22,
 
     /* Array Functions (String Functions cont.) */
-    ConcatFunction: 26,
-    LengthFunction: 27,
-    SkipFunction: 28,
-    TakeFunction: 29,
+    ConcatFunction: 23,
+    LengthFunction: 24,
+    SkipFunction: 25,
+    TakeFunction: 26,
 
     /* Deployment Value Functions */
-    DeploymentFunction: 30,
-    ParametersFunction: 31,
-    VariablesFunction: 32,
+    DeploymentFunction: 27,
+    ParametersFunction: 28,
+    VariablesFunction: 29,
 
     /* Resource Functions */
-    ListKeysFunction: 33,
-    ListValueFunction: 34,
-    ProviderFunction: 35,
-    ReferenceFunction: 36,
-    ResourceGroupFunction: 37,
-    ResourceIdFunction: 38,
-    SubscriptionFunction: 39
+    ListKeysFunction: 30,
+    ListValueFunction: 31,
+    ProviderFunction: 32,
+    ReferenceFunction: 33,
+    ResourceGroupFunction: 34,
+    ResourceIdFunction: 35,
+    SubscriptionFunction: 36
   };
 
   let literalNode = function(kind, location, value) {
@@ -348,7 +345,7 @@ parametersFunction
 variablesFunction
   = "variables" "(" variableName:strParam ")" properties:properties {
     let node = functionNode(nodeKind.VariablesFunction, location());
-    node.VariableName = VariableName;
+    node.variableName = variableName;
     node.properties = properties;
     return node;
   }
