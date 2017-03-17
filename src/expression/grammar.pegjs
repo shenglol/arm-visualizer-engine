@@ -518,8 +518,8 @@ identifier
 /* -------- 6. Literals -------- */
 
 integerLiteral
-  = num:([+-]? [1-9] digit+ / digit) {
-    return literalNode(nodeKind.IntegerLiteral, location(), parseInt(num));
+  = ("+" / "-")? ([1-9] digit+ / digit) {
+    return literalNode(nodeKind.IntegerLiteral, location(), parseInt(text()));
   }
 
 stringLiteral
