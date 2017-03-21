@@ -247,6 +247,7 @@ substringFunction
   = "substring" "(" stringToParse:strParam
   startIndex:("," idx:intParam { return idx; })? length:("," n:intParam { return n; })? ")" {
     let node = functionNode(nodeKind.SubstringFunction, location());
+    node.stringToParse = stringToParse;
     if (startIndex) {
       node.startIndex = startIndex;
     }
