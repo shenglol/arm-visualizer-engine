@@ -287,7 +287,7 @@ uniqueStringFunction
   }
 
 uriFunction
-  = "uri" "(" baseUri:strParam relativeUri:strParam ")" {
+  = "uri" "(" baseUri:strParam "," relativeUri:strParam ")" {
     let node = functionNode(nodeKind.UriFunction, location());
     node.baseUri = baseUri;
     node.relativeUri = relativeUri;
