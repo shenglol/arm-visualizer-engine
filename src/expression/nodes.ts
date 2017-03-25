@@ -55,8 +55,8 @@ export const enum NodeKind {
 
 export interface Node {
   kind: NodeKind;
-  pos: number;
-  end: number;
+  start?: number;
+  end?: number;
 }
 
 export interface Identifier extends Node {
