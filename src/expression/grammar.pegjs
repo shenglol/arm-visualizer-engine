@@ -58,7 +58,7 @@
     /* Resource Functions */
     ListKeysFunction: 30,
     ListValueFunction: 31,
-    ProviderFunction: 32,
+    ProvidersFunction: 32,
     ReferenceFunction: 33,
     ResourceGroupFunction: 34,
     ResourceIdFunction: 35,
