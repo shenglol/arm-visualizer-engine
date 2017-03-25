@@ -385,7 +385,7 @@ providersFunction
 
 referenceFunction
   = "reference" "("
-  resourceNameOrId:strParam "," apiVersion:("," str:strParam { return str; })? ")" properties:properties {
+  resourceNameOrId:strParam apiVersion:("," str:strParam { return str; })? ")" properties:properties {
     let node = functionNode(nodeKind.ReferenceFunction, location());
     node.resourceNameOrId = resourceNameOrId;
     if (apiVersion) {
