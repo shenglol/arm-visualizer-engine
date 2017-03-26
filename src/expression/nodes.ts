@@ -122,7 +122,7 @@ export type ArrayParameter
   | ParametersFunction
   | VariablesFunction
   | ParametersFunction
-  | VariablesFunction
+  | VariablesFunction;
 
 export type ObjectParameter
   = DeploymentFunction

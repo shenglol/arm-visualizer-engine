@@ -1,7 +1,7 @@
-import "mocha";
 import { expect } from "chai";
+import "mocha";
 
-import { parser, NodeKind } from "../../src";
+import { NodeKind, parser } from "../../src";
 
 describe("Parser", () => {
   describe("#parse", () => {
@@ -76,7 +76,7 @@ describe("Parser", () => {
           kind: NodeKind.StringLiteral,
           start: 6,
           end: 11,
-          value: 'foo'
+          value: "foo"
         },
       });
     });
