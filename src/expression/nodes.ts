@@ -2,7 +2,7 @@ import * as _ from "lodash";
 
 export const enum NodeKind {
   // Identifiers
-  Identifer,
+  Identifier,
 
   // Literals
   IntegerLiteral,
@@ -60,7 +60,7 @@ export interface Node {
 }
 
 export interface Identifier extends Node {
-  kind: NodeKind.Identifer;
+  kind: NodeKind.Identifier;
   text: string;
 }
 

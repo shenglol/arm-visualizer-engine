@@ -478,7 +478,7 @@ describe("Parser", () => {
         end: 25,
         properties: [
           {
-            kind: NodeKind.Identifer,
+            kind: NodeKind.Identifier,
             start: 15,
             end: 18,
             text: "foo"
@@ -527,7 +527,7 @@ describe("Parser", () => {
             value: 0
           },
           {
-            kind: NodeKind.Identifer,
+            kind: NodeKind.Identifier,
             start: 23,
             end: 26,
             text: "bar"
@@ -619,7 +619,7 @@ describe("Parser", () => {
         },
         properties: [
           {
-            kind: NodeKind.Identifer,
+            kind: NodeKind.Identifier,
             start: 30,
             end: 33,
             text: "foo"
@@ -636,7 +636,7 @@ describe("Parser", () => {
             },
             properties: [
               {
-                kind: NodeKind.Identifer,
+                kind: NodeKind.Identifier,
                 start: 52,
                 end: 54,
                 text: "id"
@@ -745,7 +745,7 @@ describe("Parser", () => {
         },
         properties: [
           {
-            kind: NodeKind.Identifer,
+            kind: NodeKind.Identifier,
             start: 19,
             end: 22,
             text: "bar"
@@ -815,13 +815,13 @@ describe("Parser", () => {
         },
         properties: [
           {
-            kind: NodeKind.Identifer,
+            kind: NodeKind.Identifier,
             start: 26,
             end: 27,
             text: "a"
           },
           {
-            kind: NodeKind.Identifer,
+            kind: NodeKind.Identifier,
             start: 28,
             end: 29,
             text: "b"
@@ -846,13 +846,13 @@ describe("Parser", () => {
         end: 25,
         properties: [
           {
-            kind: NodeKind.Identifer,
+            kind: NodeKind.Identifier,
             start: 18,
             end: 21,
             text: "foo"
           },
           {
-            kind: NodeKind.Identifer,
+            kind: NodeKind.Identifier,
             start: 22,
             end: 25,
             text: "bar"
@@ -905,13 +905,13 @@ describe("Parser", () => {
         end: 24,
         properties: [
           {
-            kind: NodeKind.Identifer,
+            kind: NodeKind.Identifier,
             start: 17,
             end: 20,
             text: "foo"
           },
           {
-            kind: NodeKind.Identifer,
+            kind: NodeKind.Identifier,
             start: 21,
             end: 24,
             text: "bar"
