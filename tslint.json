@@ -5,16 +5,6 @@
     "array-type": [true, "array"],
     "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"],
     "trailing-comma": [false],
-    "object-literal-sort-keys": false,
-    "member-access": false,
-    "whitespace": [
-      true,
-      "check-branch",
-      "check-decl",
-      "check-operator",
-      "check-module",
-      "check-separator",
-      "check-type"
-    ]
+    "object-literal-sort-keys": false
   }
 }

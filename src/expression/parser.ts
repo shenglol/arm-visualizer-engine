@@ -18,8 +18,8 @@ export class Parser {
     return this._instance || (this._instance = new this());
   }
 
-  parse(expr: string): Node {
-    return <Node>this.parser.parse(expr);
+  public parse(expr: string): Node {
+    return this.parser.parse(expr) as Node;
   }
 }
 
