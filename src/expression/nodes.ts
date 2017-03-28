@@ -177,7 +177,7 @@ export interface Base64Function extends Function<NodeKind.Base64Function> {
 export interface PadLeftFunction extends Function<NodeKind.PadLeftFunction> {
   valueToPad: StringParameter | IntegerParameter;
   totalLength: IntegerParameter;
-  paddingCharacter?: string;
+  paddingCharacter?: StringParameter;
 }
 
 export interface ReplaceFunction extends Function<NodeKind.ReplaceFunction> {
