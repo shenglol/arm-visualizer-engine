@@ -77,8 +77,10 @@ export interface Function<TKind extends NodeKind> extends Node {
   kind: TKind;
 }
 
-export type IntegerParameter
-  = IntegerLiteral
+export type Parameter
+  = Identifier
+  | IntegerLiteral
+  | StringLiteral
   | AddFunction
   | CopyIndexFunction
   | DivFunction
@@ -86,18 +88,8 @@ export type IntegerParameter
   | ModFunction
   | MulFunction
   | SubFunction
-  | LengthFunction
-  | ParametersFunction
-  | VariablesFunction;
-
-export type StringParameter
-  = StringLiteral
   | Base64Function
-  | ConcatFunction
-  | LengthFunction
   | PadLeftFunction
-  | ReplaceFunction
-  | SkipFunction
   | SplitFunction
   | StringFunction
   | SubstringFunction
@@ -112,20 +104,8 @@ export type StringParameter
   | SkipFunction
   | TakeFunction
   | ParametersFunction
-  | VariablesFunction;
-
-export type ArrayParameter
-  = ConcatFunction
-  | LengthFunction
-  | SkipFunction
-  | TakeFunction
-  | ParametersFunction
   | VariablesFunction
-  | ParametersFunction
-  | VariablesFunction;
-
-export type ObjectParameter
-  = DeploymentFunction
+  | DeploymentFunction
   | ParametersFunction
   | VariablesFunction
   | ListKeysFunction
@@ -135,110 +115,118 @@ export type ObjectParameter
   | ResourceGroupFunction
   | SubscriptionFunction;
 
-export type Properties = (IntegerParameter | StringParameter | Identifier)[];
+export type Properties = Parameter[];
 
 export interface AddFunction extends Function<NodeKind.AddFunction> {
-  operand1: IntegerParameter;
-  operand2: IntegerParameter;
+  operand1: Parameter;
+  operand2: Parameter;
 }
 
 export interface CopyIndexFunction extends Function<NodeKind.CopyIndexFunction> {
-  offset?: IntegerParameter;
+  offset?: Parameter;
 }
 
 export interface DivFunction extends Function<NodeKind.DivFunction> {
-  operand1: IntegerParameter;
-  operand2: IntegerParameter;
+  operand1: Parameter;
+  operand2: Parameter;
 }
 
 export interface IntFunction extends Function<NodeKind.IntFunction> {
-  valueToConvert: IntegerParameter | StringParameter;
+  valueToConvert: Parameter;
 }
 
 export interface ModFunction extends Function<NodeKind.ModFunction> {
-  operand1: IntegerParameter;
-  operand2: IntegerParameter;
+  operand1: Parameter;
+  operand2: Parameter;
 }
 
 export interface MulFunction extends Function<NodeKind.MulFunction> {
-  operand1: IntegerParameter;
-  operand2: IntegerParameter;
+  operand1: Parameter;
+  operand2: Parameter;
 }
 
 export interface SubFunction extends Function<NodeKind.SubFunction> {
-  operand1: IntegerParameter;
-  operand2: IntegerParameter;
+  operand1: Parameter;
+  operand2: Parameter;
 }
 
 export interface Base64Function extends Function<NodeKind.Base64Function> {
-  inputStr: StringParameter;
+  inputStr: Parameter;
 }
 
 export interface PadLeftFunction extends Function<NodeKind.PadLeftFunction> {
-  valueToPad: StringParameter | IntegerParameter;
-  totalLength: IntegerParameter;
-  paddingCharacter?: StringParameter;
+  valueToPad: Parameter;
+  totalLength: Parameter;
+  paddingCharacter?: Parameter;
 }
 
 export interface ReplaceFunction extends Function<NodeKind.ReplaceFunction> {
-  originalString: StringParameter;
-  oldString: StringParameter;
-  newString: StringParameter;
+  originalString: Parameter;
+  oldString: Parameter;
+  newString: Parameter;
 }
 
 export interface SplitFunction extends Function<NodeKind.SplitFunction> {
-  inputString: StringParameter;
-  delimiter: StringParameter;
+  inputString: Parameter;
+  delimiter: Parameter;
 }
 
 export interface StringFunction extends Function<NodeKind.StringFunction> {
-  valueToConvert: IntegerParameter | StringParameter | ArrayParameter | ObjectParameter;
+  valueToConvert: Parameter;
 }
 
 export interface SubstringFunction extends Function<NodeKind.SubstringFunction> {
-  stringToParse: StringParameter;
-  startIndex?: IntegerParameter;
-  length?: IntegerParameter;
+  stringToParse: Parameter;
+  startIndex?: Parameter;
+  length?: Parameter;
 }
 
 export interface ToLowerFunction extends Function<NodeKind.ToLowerFunction> {
-  stringToChange: StringParameter;
+  stringToChange: Parameter;
 }
 
 export interface ToUpperFunction extends Function<NodeKind.ToUpperFunction> {
-  stringToChange: StringParameter;
+  stringToChange: Parameter;
 }
 
 export interface TrimFunction extends Function<NodeKind.TrimFunction> {
-  stringToTrim: StringParameter;
+  stringToTrim: Parameter;
 }
 
 export interface UniqueStringFunction extends Function<NodeKind.UniqueStringFunction> {
-  baseString: StringParameter;
-  extraStrings: StringParameter[];
+  baseString: Parameter;
+  extraStrings: Parameter[];
 }
 
 export interface UriFunction extends Function<NodeKind.UriFunction> {
-  baseUri: StringParameter;
-  relativeUri: StringParameter;
+  baseUri: Parameter;
+  relativeUri: Parameter;
 }
 
 export interface ConcatFunction extends Function<NodeKind.ConcatFunction> {
-  elementsToConcat: StringParameter[];
+  elementsToConcat: Parameter[];
+  category: "string" | "array";
 }
 
 export interface LengthFunction extends Function<NodeKind.LengthFunction> {
-  element: StringParameter;
+  element: Parameter;
+  category: "string" | "array";
 }
 
 export interface SkipFunction extends Function<NodeKind.SkipFunction> {
-  originalValue: StringParameter;
-  numberToSkip: IntegerParameter;
+  originalValue: Parameter;
+  numberToSkip: Parameter;
+  category: "string" | "array";
 }
 
 export interface TakeFunction extends Function<NodeKind.TakeFunction> {
-  originalValue: StringParameter;
-  numberToTake: IntegerParameter;
+  originalValue: Parameter;
+  numberToTake: Parameter;
+  category: "string" | "array";
+}
+
+export interface FunctionWithProperties {
+  properties: Properties;
 }
 
 export interface DeploymentFunction extends Function<NodeKind.DeploymentFunction> {
@@ -246,36 +234,36 @@ export interface DeploymentFunction extends Function<NodeKind.DeploymentFunction
 }
 
 export interface ParametersFunction extends Function<NodeKind.ParametersFunction> {
-  parameterName: StringParameter;
+  parameterName: Parameter;
   properties: Properties;
 }
 
 export interface VariablesFunction extends Function<NodeKind.VariablesFunction> {
-  variableName: StringParameter;
+  variableName: Parameter;
   properties: Properties;
 }
 
 export interface ListKeysFunction extends Function<NodeKind.ListKeysFunction> {
-  resourceNameOrId: StringParameter;
-  apiVersion: StringParameter;
+  resourceNameOrId: Parameter;
+  apiVersion: Parameter;
   properties: Properties;
 }
 
 export interface ListValueFunction extends Function<NodeKind.ListValueFunction> {
-  resourceNameOrId: StringParameter;
-  apiVersion: StringParameter;
+  resourceNameOrId: Parameter;
+  apiVersion: Parameter;
   properties: Properties;
 }
 
 export interface ProvidersFunction extends Function<NodeKind.ProvidersFunction> {
-  providerNamespace: StringParameter;
-  resourceType?: StringParameter;
+  providerNamespace: Parameter;
+  resourceType?: Parameter;
   properties: Properties;
 }
 
 export interface ReferenceFunction extends Function<NodeKind.ReferenceFunction> {
-  resourceNameOrId: StringParameter;
-  apiVersion?: StringParameter;
+  resourceNameOrId: Parameter;
+  apiVersion?: Parameter;
   properties: Properties;
 }
 
@@ -284,9 +272,9 @@ export interface ResourceGroupFunction extends Function<NodeKind.ResourceGroupFu
 }
 
 export interface ResourceIdFunction extends Function<NodeKind.ResourceIdFunction> {
-  first: StringParameter;
-  second: StringParameter;
-  rest: StringParameter[];
+  first: Parameter;
+  second: Parameter;
+  rest: Parameter[];
 }
 
 export interface SubscriptionFunction extends Function<NodeKind.SubscriptionFunction> {
