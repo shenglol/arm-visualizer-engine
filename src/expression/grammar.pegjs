@@ -13,16 +13,16 @@
 
 {
   const nodeKind = {
-    /* Identifiers */
+    // Identifiers
     Identifier: 0,
 
-    /* Literals */
+    // Literals
     IntegerLiteral: 1,
     StringLiteral: 2,
     ObjectLiteral: 3,
     ArrayLiteral: 4,
 
-    /* Integer Functions */
+    // Integer Functions
     AddFunction: 5,
     CopyIndexFunction: 6,
     DivFunction: 7,
@@ -31,7 +31,7 @@
     MulFunction: 10,
     SubFunction: 11,
 
-    /* String Functions */
+    // String Functions
     Base64Function: 12,
     PadLeftFunction: 13,
     ReplaceFunction: 14,
@@ -44,18 +44,18 @@
     UniqueStringFunction: 21,
     UriFunction: 22,
 
-    /* Array Functions (String Functions cont.) */
+    // Array Functions (String Functions cont.)
     ConcatFunction: 23,
     LengthFunction: 24,
     SkipFunction: 25,
     TakeFunction: 26,
 
-    /* Deployment Value Functions */
+    // Deployment Value Functions
     DeploymentFunction: 27,
     ParametersFunction: 28,
     VariablesFunction: 29,
 
-    /* Resource Functions */
+    // Resource Functions
     ListKeysFunction: 30,
     ListValueFunction: 31,
     ProvidersFunction: 32,
@@ -64,6 +64,45 @@
     ResourceIdFunction: 35,
     SubscriptionFunction: 36
   };
+
+  let functionNames = [
+    "add",
+    "copyIndex",
+    "div",
+    "int",
+    "mod",
+    "mul",
+    "sub",
+    "base64",
+    "concat",
+    "length",
+    "padLeft",
+    "replace",
+    "skip",
+    "split",
+    "string",
+    "substring",
+    "take",
+    "toLower",
+    "toUpper",
+    "trim",
+    "uniqueString",
+    "uri",
+    "concat",
+    "length",
+    "skip",
+    "take",
+    "deployment",
+    "parameters",
+    "variables",
+    "listKeys",
+    "listValue",
+    "providers",
+    "reference",
+    "resourceGroup",
+    "resourceId",
+    "subscription"
+  ];
 
   let literalNode = function(kind, location, value) {
     return {
@@ -89,12 +128,24 @@ start
   = expression
 
 expression
-  = "[" _ func:function _ "]" { return func; }
+  // The following string literals are not expression, but we may still parse it.
+  = "[[" .* { return literalNode(nodeKind.StringLiteral, location(), text()); }
+  / !"[" .* { return literalNode(nodeKind.StringLiteral, location(), text()); }
+
+  // An expression contains a function as its root.
+  / "[" _ func:function _ "]" { return func; }
+
+  // Errors.
+  / "[" _ func:function _ ch:[^\]]+ "]" { error("Expected end of input but \"" + ch.join("") + "\" found."); }
+  / "[" _ func:function _ ch:[^\]]+ { error("Expected \"]\" but \"" + ch.join("") + "\" found."); }
+  / "[" _ "]" { error("Expected a function in the expression."); }
+  / "[" _ ch:[^\]]* { error("Expected \"]\" but end of input found."); }
+
 
 /* -------- 2. Functions -------- */
 
 function
-  /* Numeric Functions */
+  // Numeric Functions.
   = addFunction
   / copyIndexFunction
   / divFunction
@@ -103,7 +154,7 @@ function
   / mulFunction
   / subFunction
 
-  /* String Functions */
+  // String Functions.
   / base64Function
   / concatFunction
   / lengthFunction
@@ -120,18 +171,18 @@ function
   / uniqueStringFunction
   / uriFunction
 
-  /* Array Functions */
+  // Array Functions (String Functions cont.).
   / concatFunction
   / lengthFunction
   / skipFunction
   / takeFunction
 
-  /* Deployment Value Functions */
+  // Deployment Value Functions.
   / deploymentFunction
   / parametersFunction
   / variablesFunction
 
-  /* Resource Functions */
+  // Resource Functions.
   / listKeysFunction
   / listValueFunction
   / providersFunction
@@ -140,10 +191,15 @@ function
   / resourceIdFunction
   / subscriptionFunction
 
+  // Unrecognized Function Error.
+  / ch:[^ (),\]']+ [ (),\]'] & { return functionNames.indexOf(ch.join("")) < 0; } {
+    error("Unrecognized function name: \"" + ch.join("") + "\".");
+   }
+
 /* -------- 2.1 Numeric Functions -------- */
 
 addFunction
-  = "add" "(" operand1:intParam "," operand2:intParam ")" {
+  = "add" leftParenthese operand1:parameter comma operand2:parameter rightParenthese {
     let node = functionNode(nodeKind.AddFunction, location());
     node.operand1 = operand1;
     node.operand2 = operand2;
@@ -151,7 +207,7 @@ addFunction
   }
 
 copyIndexFunction
-  = "copyIndex" "(" offset:intParam? ")" {
+  = "copyIndex" leftParenthese offset:optionalParameter rightParenthese {
     let node = functionNode(nodeKind.CopyIndexFunction, location());
     if (offset) {
       node.offset = offset;
@@ -160,7 +216,7 @@ copyIndexFunction
   }
 
 divFunction
-  = "div" "(" operand1:intParam "," operand2:intParam ")" {
+  = "div" leftParenthese operand1:parameter comma operand2:parameter rightParenthese {
     let node = functionNode(nodeKind.DivFunction, location());
     node.operand1 = operand1;
     node.operand2 = operand2;
@@ -168,14 +224,14 @@ divFunction
   }
 
 intFunction
-  = "int" "(" valueToConvert:(intParam/strParam) ")" {
+  = "int" leftParenthese valueToConvert:parameter rightParenthese {
     let node = functionNode(nodeKind.IntFunction, location());
     node.valueToConvert = valueToConvert;
     return node;
   }
 
 modFunction
-  = "mod" "(" operand1:intParam "," operand2:intParam ")" {
+  = "mod" leftParenthese operand1:parameter comma operand2:parameter rightParenthese {
     let node = functionNode(nodeKind.ModFunction, location());
     node.operand1 = operand1;
     node.operand2 = operand2;
@@ -183,7 +239,7 @@ modFunction
   }
 
 mulFunction
-  = "mul" "(" operand1:intParam "," operand2:intParam ")" {
+  = "mul" leftParenthese operand1:parameter comma operand2:parameter rightParenthese {
     let node = functionNode(nodeKind.MulFunction, location());
     node.operand1 = operand1;
     node.operand2 = operand2;
@@ -191,7 +247,7 @@ mulFunction
   }
 
 subFunction
-  = "sub" "(" operand1:intParam "," operand2:intParam ")" {
+  = "sub" leftParenthese operand1:parameter comma operand2:parameter rightParenthese {
     let node = functionNode(nodeKind.SubFunction, location());
     node.operand1 = operand1;
     node.operand2 = operand2;
@@ -201,15 +257,15 @@ subFunction
 /* -------- 2.2 String Functions ------- */
 
 base64Function
-  = "base64" "(" inputString:strParam ")" {
+  = "base64" leftParenthese inputString:parameter rightParenthese {
     let node = functionNode(nodeKind.Base64Function, location());
     node.inputString = inputString;
     return node;
   }
 
 padLeftFunction
-  = "padLeft" "(" valueToPad:(strParam/intParam) "," totalLength:intParam
-  paddingCharacter:("," ch:charParam { return ch; })? ")" {
+  = "padLeft" leftParenthese valueToPad:parameter comma totalLength:parameter
+  paddingCharacter:(restComma ch:parameter { return ch; })? rightParenthese {
     let node = functionNode(nodeKind.PadLeftFunction, location());
     node.valueToPad = valueToPad;
     node.totalLength = totalLength;
@@ -220,7 +276,8 @@ padLeftFunction
   }
 
 replaceFunction
-  = "replace" "(" originalString:strParam "," oldString:strParam "," newString:strParam ")" {
+  = "replace" leftParenthese originalString:parameter comma
+  oldString:parameter comma newString:parameter rightParenthese {
     let node = functionNode(nodeKind.ReplaceFunction, location());
     node.originalString = originalString;
     node.oldString = oldString;
@@ -229,7 +286,7 @@ replaceFunction
   }
 
 splitFunction
-  = "split" "(" inputString:strParam "," delimiter:strParam ")" {
+  = "split" leftParenthese inputString:parameter comma delimiter:parameter rightParenthese {
     let node = functionNode(nodeKind.SplitFunction, location());
     node.inputString = inputString;
     node.delimiter = delimiter;
@@ -237,15 +294,16 @@ splitFunction
   }
 
 stringFunction
-  = "string" "(" valueToConvert:(intParam/strParam/arrayParam/objParam) ")" {
+  = "string" leftParenthese valueToConvert:parameter rightParenthese {
     let node = functionNode(nodeKind.StringFunction, location());
     node.valueToConvert = valueToConvert;
     return node;
   }
 
 substringFunction
-  = "substring" "(" stringToParse:strParam
-  startIndex:("," idx:intParam { return idx; })? length:("," n:intParam { return n; })? ")" {
+  = "substring" leftParenthese stringToParse:parameter
+  startIndex:(restComma idx:parameter { return idx; })?
+  length:(restComma n:parameter { return n; })? rightParenthese {
     let node = functionNode(nodeKind.SubstringFunction, location());
     node.stringToParse = stringToParse;
     if (startIndex) {
@@ -258,28 +316,29 @@ substringFunction
   }
 
 toLowerFunction
-  = "toLower" "(" stringToChange:strParam ")" {
+  = "toLower" leftParenthese stringToChange:parameter rightParenthese {
     let node = functionNode(nodeKind.ToLowerFunction, location());
     node.stringToChange = stringToChange;
     return node;
   }
 
 toUpperFunction
-  = "toUpper" "(" stringToChange:strParam ")" {
+  = "toUpper" leftParenthese stringToChange:parameter rightParenthese {
     let node = functionNode(nodeKind.ToUpperFunction, location());
     node.stringToChange = stringToChange;
     return node;
   }
 
 trimFunction
-  = "trim" "(" stringToTrim:strParam ")" {
+  = "trim" leftParenthese stringToTrim:parameter rightParenthese {
     let node = functionNode(nodeKind.TrimFunction, location());
     node.stringToTrim = stringToTrim;
     return node;
   }
 
 uniqueStringFunction
-  = "uniqueString" "(" baseString:strParam extraStrings:("," str:strParam { return str; })* ")" {
+  = "uniqueString" leftParenthese baseString:parameter
+  extraStrings:(restComma str:parameter { return str; })* rightParenthese {
     let node = functionNode(nodeKind.UniqueStringFunction, location());
     node.baseString = baseString;
     node.extraStrings = extraStrings;
@@ -287,7 +346,7 @@ uniqueStringFunction
   }
 
 uriFunction
-  = "uri" "(" baseUri:strParam "," relativeUri:strParam ")" {
+  = "uri" leftParenthese baseUri:parameter comma relativeUri:parameter rightParenthese {
     let node = functionNode(nodeKind.UriFunction, location());
     node.baseUri = baseUri;
     node.relativeUri = relativeUri;
@@ -297,21 +356,22 @@ uriFunction
 /* -------- 2.3 Array Functions (String Functions cont.) -------- */
 
 concatFunction
-  = "concat" "(" first:strParam rest:("," element:strParam { return element; })* ")" {
+  = "concat" leftParenthese first:parameter
+  rest:(restComma element:parameter { return element; })* rightParenthese {
     let node = functionNode(nodeKind.ConcatFunction, location());
     node.elementsToConcat = [first].concat(rest);
     return node;
   }
 
 lengthFunction
-  = "length" "(" element:strParam ")" {
+  = "length" leftParenthese element:parameter rightParenthese {
     let node = functionNode(nodeKind.LengthFunction, location());
     node.element = element;
     return node;
   }
 
 skipFunction
-  = "skip" "(" originalValue:strParam "," numberToSkip:intParam ")" {
+  = "skip" leftParenthese originalValue:parameter comma numberToSkip:parameter rightParenthese {
     let node = functionNode(nodeKind.SkipFunction, location());
     node.originalValue = originalValue;
     node.numberToSkip = numberToSkip;
@@ -319,7 +379,7 @@ skipFunction
   }
 
 takeFunction
-  = "take" "(" originalValue:strParam "," numberToTake:intParam ")" {
+  = "take" leftParenthese originalValue:parameter comma numberToTake:parameter rightParenthese {
     let node = functionNode(nodeKind.TakeFunction, location());
     node.originalValue = originalValue;
     node.numberToTake = numberToTake;
@@ -329,14 +389,14 @@ takeFunction
 /* -------- 2.4 Deployment Value Functions -------- */
 
 deploymentFunction
-  = "deployment" "(" ")" properties:properties {
+  = "deployment" leftParenthese rightParenthese properties:properties {
     let node = functionNode(nodeKind.DeploymentFunction, location());
     node.properties = properties;
     return node;
   }
 
 parametersFunction
-  = "parameters" "(" parameterName:strParam ")" properties:properties {
+  = "parameters" leftParenthese parameterName:parameter rightParenthese properties:properties {
     let node = functionNode(nodeKind.ParametersFunction, location());
     node.parameterName = parameterName;
     node.properties = properties;
@@ -344,7 +404,7 @@ parametersFunction
   }
 
 variablesFunction
-  = "variables" "(" variableName:strParam ")" properties:properties {
+  = "variables" leftParenthese variableName:parameter rightParenthese properties:properties {
     let node = functionNode(nodeKind.VariablesFunction, location());
     node.variableName = variableName;
     node.properties = properties;
@@ -354,7 +414,8 @@ variablesFunction
 /* -------- 2.5 Resource Functions -------- */
 
 listKeysFunction
-  = "listKeys" "(" resourceNameOrId:strParam "," apiVersion:strParam ")" properties:properties {
+  = "listKeys" leftParenthese resourceNameOrId:parameter comma apiVersion:parameter rightParenthese
+  properties:properties {
     let node = functionNode(nodeKind.ListKeysFunction, location());
     node.resourceNameOrId = resourceNameOrId;
     node.apiVersion = apiVersion;
@@ -363,7 +424,8 @@ listKeysFunction
   }
 
 listValueFunction
-  = "list{Value}" "(" resourceNameOrId:strParam "," apiVersion:strParam ")" properties:properties {
+  = "list{Value}" leftParenthese resourceNameOrId:parameter comma apiVersion:parameter rightParenthese
+  properties:properties {
     let node = functionNode(nodeKind.ListValueFunction, location());
     node.resourceNameOrId = resourceNameOrId;
     node.apiVersion = apiVersion;
@@ -373,7 +435,8 @@ listValueFunction
 
 providersFunction
   = "providers" "("
-  providerNamespace:strParam resourceType:("," str:strParam { return str; })? ")" properties:properties {
+  providerNamespace:parameter
+  resourceType:(restComma str:parameter { return str; })? rightParenthese properties:properties {
     let node = functionNode(nodeKind.ProvidersFunction, location());
     node.providerNamespace = providerNamespace;
     if (resourceType) {
@@ -385,7 +448,8 @@ providersFunction
 
 referenceFunction
   = "reference" "("
-  resourceNameOrId:strParam apiVersion:("," str:strParam { return str; })? ")" properties:properties {
+  resourceNameOrId:parameter
+  apiVersion:(restComma str:parameter { return str; })? rightParenthese properties:properties {
     let node = functionNode(nodeKind.ReferenceFunction, location());
     node.resourceNameOrId = resourceNameOrId;
     if (apiVersion) {
@@ -396,7 +460,7 @@ referenceFunction
   }
 
 resourceGroupFunction
-  = "resourceGroup" "(" ")" properties:properties {
+  = "resourceGroup" leftParenthese rightParenthese properties:properties {
     let node = functionNode(nodeKind.ResourceGroupFunction, location());
     node.properties = properties;
     return node;
@@ -404,7 +468,8 @@ resourceGroupFunction
 
 // FIXME: add rules to match subscriptionId (GUID) and resourceGroupName (xxx/yyy/zzz).
 resourceIdFunction
-  = "resourceId" "(" first:strParam "," second:strParam rest:("," str:strParam { return str; })* ")" {
+  = "resourceId" leftParenthese first:parameter comma second:parameter
+  rest:(restComma str:parameter { return str; })* rightParenthese {
     let node = functionNode(nodeKind.ResourceIdFunction, location());
     node.first = first;
     node.second = second;
@@ -413,7 +478,7 @@ resourceIdFunction
   }
 
 subscriptionFunction
-  = "subscription" "(" ")" properties:properties {
+  = "subscription" leftParenthese rightParenthese properties:properties {
     let node = functionNode(nodeKind.SubscriptionFunction, location());
     node.properties = properties;
     return node;
@@ -421,76 +486,42 @@ subscriptionFunction
 
 /* -------- 3. Parameters -------- */
 
-intParam
-  = _ num:integerLiteral _ { return num; }
-  / _ func:(
-    addFunction
-    / copyIndexFunction
-    / divFunction
-    / intFunction
-    / modFunction
-    / mulFunction
-    / subFunction
-    / lengthFunction
-    / parametersFunction
-    / variablesFunction
-  ) _ { return func; }
+parameter
+  = _ num:integerLiteral { return num; }
+  / _ str:stringLiteral { return str; }
+  / _ func:function { return func; }
+  / _ ch:. { error("Expected a parameter but \"" + ch + "\" found.") }
 
-strParam
-  = _ str:stringLiteral _ { return str; }
-  / _ func:(
-    base64Function
-    / concatFunction
-    / lengthFunction
-    / padLeftFunction
-    / replaceFunction
-    / skipFunction
-    / splitFunction
-    / stringFunction
-    / substringFunction
-    / takeFunction
-    / toLowerFunction
-    / toUpperFunction
-    / trimFunction
-    / uniqueStringFunction
-    / uriFunction
-    / concatFunction
-    / lengthFunction
-    / skipFunction
-    / takeFunction
-    / parametersFunction
-    / variablesFunction
-  ) _ { return func; }
+/*
+Used in copyIndex function which has only one optional parameter.
+The "parameter" expression above won't work because the last rule will comsume
+the optional parameter and throw an error.
+*/
+optionalParameter
+  = _ num:integerLiteral? { return num; }
+  / _ str:stringLiteral? { return str; }
+  / _ func:function? { return func; }
 
-charParam
-  = _ "'" ch:character "'" _ {
-    return literalNode(nodeKind.StringLiteral, location(), ch);
-  }
+comma
+  = _ ","
+  / _ !"," ch:. { error("Expected \",\" but found \"" + ch + "\"."); }
 
-arrayParam
-  = _ func:(
-     concatFunction
-    / lengthFunction
-    / skipFunction
-    / takeFunction
-    / parametersFunction
-    / variablesFunction
-    / parametersFunction
-    / variablesFunction
-  ) { return func; }
+/*
+Used for rest parameters. Unlike the "comma" expression, it won't throw an error
+when a right parenthese encountered, since the right parenthese might be a
+termination sign of a rest parameter list.
+*/
+restComma
+  = _ ","
+  / _ !"," ch:[^)] { error("Expected \",\" but found \"" + ch + "\"."); }
 
-objParam
-  = _ func:(
-    deploymentFunction
-    / parametersFunction
-    / variablesFunction
-    / listKeysFunction
-    / listValueFunction
-    / providersFunction
-    / referenceFunction
-    / resourceGroupFunction
-    / subscriptionFunction
-  ) { return func; }
+leftParenthese
+  = _ "("
+  / _ !"(" ch:[^a-zA-Z] { error("Expected \"(\" but found \"" + ch + "\"."); }
+
+rightParenthese
+  = _ ")"
+  / _ !")" ch:. { error("Expected \")\" but found \"" + ch + "\"."); }
 
 /* -------- 4. Properties -------- */
 
@@ -501,20 +532,28 @@ dotProperty
   = "." prop:identifier { return prop; }
 
 indexProperty
-  = "[" prop:(intParam/strParam) "]" { return prop; }
+  = leftSqureBracket prop:parameter rightSqureBracket { return prop; }
+
+leftSqureBracket
+  = _ "["
+  / _ !"[" ch:[^),\]] { error("Expected \"[\" or end of input but found \"" + ch + "\"."); }
+
+rightSqureBracket
+  = _ "]"
+  / _ !"]" ch:. { error("Expected \"]\" but found \"" + ch + "\"."); }
 
 /* -------- 5. Identifiers -------- */
 
 identifier
-  = id:[0-9a-z_$]i+ {
+  = [a-z]i [0-9a-z_$]i* {
     return {
       kind: nodeKind.Identifier,
       start: location().start.column,
       end: location().end.column,
-      text: id.join("")
+      text: text()
     };
   }
-
+  / ch:. { error("Expected an identifier but found \"" + ch + "\"."); }
 
 /* -------- 6. Literals -------- */
 
@@ -527,8 +566,11 @@ stringLiteral
   = "'" chars:character* "'" {
     return literalNode(nodeKind.StringLiteral, location(), chars.join(""));
   }
+  / "'" character* ch:[^'] {
+  	error("Expected \"'\" but found \"" + ch + "\".");
+  }
 
-/* -------- 7. Other Lexical Elements -------- */
+/* -------- 7. Basic Lexical Elements -------- */
 
 character
   = [^'\\\0-\x1F\x7f]
@@ -555,3 +597,5 @@ _ "whitespaces"
 
 ws "whitespace"
   = [ \t\r\n]
+
+

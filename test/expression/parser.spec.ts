@@ -5,6 +5,24 @@ import { NodeKind, parser } from "../../src";
 
 describe("Parser", () => {
   describe("#parse", () => {
+    it("should parse string literals as an expression", () => {
+      let strLiteral1 = "[[The quick brown fox jumps over the lazy dog";
+      let strLiteral2 = "The quick brown fox jumps over the lazy dog";
+
+      expect(parser.parse(strLiteral1)).to.deep.equal({
+        kind: NodeKind.StringLiteral,
+        start: 1,
+        end: 46,
+        value: "[[The quick brown fox jumps over the lazy dog"
+      });
+      expect(parser.parse(strLiteral2)).to.deep.equal({
+        kind: NodeKind.StringLiteral,
+        start: 1,
+        end: 44,
+        value: "The quick brown fox jumps over the lazy dog"
+      });
+    });
+
     it("should parse add function", () => {
       expect(parser.parse("[add(1, -1)]")).to.deep.equal({
         kind: NodeKind.AddFunction,
@@ -194,7 +212,7 @@ describe("Parser", () => {
         },
         paddingCharacter: {
           kind: NodeKind.StringLiteral,
-          start: 20,
+          start: 21,
           end: 24,
           value: "x"
         }
@@ -918,6 +936,69 @@ describe("Parser", () => {
           }
         ]
       });
+    });
+
+    it("should throw an error with unexpected characters succeeding root function", () => {
+      expect(() => {
+        parser.parse("[int('1')foo]");
+      }).to.throw(/Expected end of input but "foo" found./);
+    });
+
+    it("should throw an error when missing a right squre bracket", () => {
+      expect(() => {
+        parser.parse("[add(1, 2)xxxxx");
+      }).to.throw(/Expected "]" but "xxxxx" found./);
+      expect(() => {
+        parser.parse("[concat('1', '2')");
+      }).to.throw(/Expected "]" but end of input found./);
+      expect(() => {
+        parser.parse("[foobar");
+      }).to.throw(/Expected "]" but end of input found./);
+    });
+
+    it("should throw an error when missing a function in expression", () => {
+      expect(() => {
+        parser.parse("[    ]");
+      }).to.throw(/Expected a function in the expression./);
+    });
+
+    it("should throw an error when unrecognized function encountered", () => {
+      expect(() => {
+        parser.parse("[add(foo, 1)]");
+      }).to.throw(/Unrecognized function name: "foo"./);
+    });
+
+    it("should throw an error when missing a comma", () => {
+      expect(() => {
+        parser.parse("[concat('1' '2')]");
+      }).to.throw(/Expected "," but found "'"./);
+      expect(() => {
+        parser.parse("[div(0)]");
+      }).to.throw(/Expected "," but found "\)"./);
+    });
+
+    it("should throw an error when missing a left parentheses", () => {
+      expect(() => {
+        parser.parse("[copyIndex   )]");
+      }).to.throw(/Expected "\(" but found "\)"./);
+    });
+
+    it("should throw an error when missing a right parentheses", () => {
+      expect(() => {
+        parser.parse("[copyIndex(10]");
+      }).to.throw(/Expected "\)" but found "]"./);
+    });
+
+    it("should throw an error when missing a left squre bracket", () => {
+      expect(() => {
+        parser.parse("[deployment()10]]");
+      }).to.throw(/Expected "\[" or end of input but found "1"./);
+    });
+
+    it("should throw an error when missing a right squre bracket", () => {
+      expect(() => {
+        parser.parse("[string(deployment()['foo')]");
+      }).to.throw(/Expected "\]" but found "\)"./);
     });
   });
 });
