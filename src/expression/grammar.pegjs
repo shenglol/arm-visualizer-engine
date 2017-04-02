@@ -498,9 +498,7 @@ The "parameter" expression above won't work because the last rule will comsume
 the optional parameter and throw an error.
 */
 optionalParameter
-  = _ num:integerLiteral? { return num; }
-  / _ str:stringLiteral? { return str; }
-  / _ func:function? { return func; }
+  = _ param:(integerLiteral/stringLiteral/function)? { return param; }
 
 comma
   = _ ","
