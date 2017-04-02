@@ -3,7 +3,7 @@ import * as nodes from "./nodes";
 export abstract class Visitor {
   constructor() { }
 
-  public visitNode(node: nodes.Node): void {
+  public visit(node: nodes.Node): void {
     if (!node) { return; };
 
     switch (node.kind) {
@@ -160,193 +160,193 @@ export abstract class Visitor {
     }
   }
 
-  protected visitIdentifier(node: nodes.Identifier): void { }
+  public visitIdentifier(node: nodes.Identifier): void { }
 
-  protected visitIntegerLiteral(node: nodes.IntegerLiteral): void { }
+  public visitIntegerLiteral(node: nodes.IntegerLiteral): void { }
 
-  protected visitStringLiteral(node: nodes.StringLiteral): void { }
+  public visitStringLiteral(node: nodes.StringLiteral): void { }
 
-  protected visitObjectLiteral(node: nodes.ObjectLiteral): void { }
+  public visitObjectLiteral(node: nodes.ObjectLiteral): void { }
 
-  protected visitArrayLiteral(node: nodes.ArrayLiteral): void { }
+  public visitArrayLiteral(node: nodes.ArrayLiteral): void { }
 
-  protected visitAddFunction(node: nodes.AddFunction): void {
-    this.visitNode(node.operand1);
-    this.visitNode(node.operand2);
+  public visitAddFunction(node: nodes.AddFunction): void {
+    this.visit(node.operand1);
+    this.visit(node.operand2);
   }
 
-  protected visitCopyIndexFunction(node: nodes.CopyIndexFunction): void {
-    this.visitNode(node.offset);
+  public visitCopyIndexFunction(node: nodes.CopyIndexFunction): void {
+    this.visit(node.offset);
   }
 
-  protected visitDivFunction(node: nodes.DivFunction): void {
-    this.visitNode(node.operand1);
-    this.visitNode(node.operand2);
+  public visitDivFunction(node: nodes.DivFunction): void {
+    this.visit(node.operand1);
+    this.visit(node.operand2);
   }
 
-  protected visitIntFunction(node: nodes.IntFunction): void {
-    this.visitNode(node.valueToConvert);
+  public visitIntFunction(node: nodes.IntFunction): void {
+    this.visit(node.valueToConvert);
   }
 
-  protected visitModFunction(node: nodes.ModFunction): void {
-    this.visitNode(node.operand1);
-    this.visitNode(node.operand2);
+  public visitModFunction(node: nodes.ModFunction): void {
+    this.visit(node.operand1);
+    this.visit(node.operand2);
   }
 
-  protected visitMulFunction(node: nodes.MulFunction): void {
-    this.visitNode(node.operand1);
-    this.visitNode(node.operand2);
+  public visitMulFunction(node: nodes.MulFunction): void {
+    this.visit(node.operand1);
+    this.visit(node.operand2);
   }
 
-  protected visitSubFunction(node: nodes.SubFunction): void {
-    this.visitNode(node.operand1);
-    this.visitNode(node.operand2);
+  public visitSubFunction(node: nodes.SubFunction): void {
+    this.visit(node.operand1);
+    this.visit(node.operand2);
   }
 
-  protected visitBase64Function(node: nodes.Base64Function): void {
-    this.visitNode(node.inputStr);
+  public visitBase64Function(node: nodes.Base64Function): void {
+    this.visit(node.inputStr);
   }
 
-  protected visitPadLeftFunction(node: nodes.PadLeftFunction): void {
-    this.visitNode(node.valueToPad);
-    this.visitNode(node.totalLength);
-    this.visitNode(node.paddingCharacter);
+  public visitPadLeftFunction(node: nodes.PadLeftFunction): void {
+    this.visit(node.valueToPad);
+    this.visit(node.totalLength);
+    this.visit(node.paddingCharacter);
   }
 
-  protected visitReplaceFunction(node: nodes.ReplaceFunction): void {
-    this.visitNode(node.originalString);
-    this.visitNode(node.oldString);
-    this.visitNode(node.newString);
+  public visitReplaceFunction(node: nodes.ReplaceFunction): void {
+    this.visit(node.originalString);
+    this.visit(node.oldString);
+    this.visit(node.newString);
   }
 
-  protected visitSplitFunction(node: nodes.SplitFunction): void {
-    this.visitNode(node.inputString);
-    this.visitNode(node.delimiter);
+  public visitSplitFunction(node: nodes.SplitFunction): void {
+    this.visit(node.inputString);
+    this.visit(node.delimiter);
   }
 
-  protected visitStringFunction(node: nodes.StringFunction): void {
-    this.visitNode(node.valueToConvert);
+  public visitStringFunction(node: nodes.StringFunction): void {
+    this.visit(node.valueToConvert);
   }
 
-  protected visitSubstringFunction(node: nodes.SubstringFunction): void {
-    this.visitNode(node.stringToParse);
-    this.visitNode(node.startIndex);
-    this.visitNode(node.length);
+  public visitSubstringFunction(node: nodes.SubstringFunction): void {
+    this.visit(node.stringToParse);
+    this.visit(node.startIndex);
+    this.visit(node.length);
   }
 
-  protected visitToLowerFunction(node: nodes.ToLowerFunction): void {
-    this.visitNode(node.stringToChange);
+  public visitToLowerFunction(node: nodes.ToLowerFunction): void {
+    this.visit(node.stringToChange);
   }
 
-  protected visitToUpperFunction(node: nodes.ToUpperFunction): void {
-    this.visitNode(node.stringToChange);
+  public visitToUpperFunction(node: nodes.ToUpperFunction): void {
+    this.visit(node.stringToChange);
   }
 
-  protected visitTrimFunction(node: nodes.TrimFunction): void {
-    this.visitNode(node.stringToTrim);
+  public visitTrimFunction(node: nodes.TrimFunction): void {
+    this.visit(node.stringToTrim);
   }
 
-  protected visitUniqueStringFunction(node: nodes.UniqueStringFunction): void {
-    this.visitNode(node.baseString);
+  public visitUniqueStringFunction(node: nodes.UniqueStringFunction): void {
+    this.visit(node.baseString);
     for (let str of node.extraStrings) {
-      this.visitNode(str);
+      this.visit(str);
     }
   }
 
-  protected visitUriFunction(node: nodes.UriFunction): void {
-    this.visitNode(node.baseUri);
-    this.visitNode(node.relativeUri);
+  public visitUriFunction(node: nodes.UriFunction): void {
+    this.visit(node.baseUri);
+    this.visit(node.relativeUri);
   }
 
-  protected visitConcatFunction(node: nodes.ConcatFunction): void {
+  public visitConcatFunction(node: nodes.ConcatFunction): void {
     for (let element of node.elementsToConcat) {
-      this.visitNode(element);
+      this.visit(element);
     }
   }
 
-  protected visitLengthFunction(node: nodes.LengthFunction): void {
-    this.visitNode(node.element);
+  public visitLengthFunction(node: nodes.LengthFunction): void {
+    this.visit(node.element);
   }
 
-  protected visitSkipFunction(node: nodes.SkipFunction): void {
-    this.visitNode(node.originalValue);
-    this.visitNode(node.numberToSkip);
+  public visitSkipFunction(node: nodes.SkipFunction): void {
+    this.visit(node.originalValue);
+    this.visit(node.numberToSkip);
   }
 
-  protected visitTakeFunction(node: nodes.TakeFunction): void {
-    this.visitNode(node.originalValue);
-    this.visitNode(node.numberToTake);
+  public visitTakeFunction(node: nodes.TakeFunction): void {
+    this.visit(node.originalValue);
+    this.visit(node.numberToTake);
   }
 
-  protected visitDeploymentFunction(node: nodes.DeploymentFunction): void {
+  public visitDeploymentFunction(node: nodes.DeploymentFunction): void {
     for (let prop of node.properties) {
-      this.visitNode(prop);
+      this.visit(prop);
     }
   }
 
-  protected visitParametersFunction(node: nodes.ParametersFunction): void {
-    this.visitNode(node.parameterName);
+  public visitParametersFunction(node: nodes.ParametersFunction): void {
+    this.visit(node.parameterName);
     for (let prop of node.properties) {
-      this.visitNode(prop);
+      this.visit(prop);
     }
   }
 
-  protected visitVariablesFunction(node: nodes.VariablesFunction): void {
-    this.visitNode(node.variableName);
+  public visitVariablesFunction(node: nodes.VariablesFunction): void {
+    this.visit(node.variableName);
     for (let prop of node.properties) {
-      this.visitNode(prop);
+      this.visit(prop);
     }
   }
 
-  protected visitListKeysFunction(node: nodes.ListKeysFunction): void {
-    this.visitNode(node.resourceNameOrId);
-    this.visitNode(node.apiVersion);
+  public visitListKeysFunction(node: nodes.ListKeysFunction): void {
+    this.visit(node.resourceNameOrId);
+    this.visit(node.apiVersion);
     for (let prop of node.properties) {
-      this.visitNode(prop);
+      this.visit(prop);
     }
   }
 
-  protected visitListValueFunction(node: nodes.ListValueFunction): void {
-    this.visitNode(node.resourceNameOrId);
-    this.visitNode(node.apiVersion);
+  public visitListValueFunction(node: nodes.ListValueFunction): void {
+    this.visit(node.resourceNameOrId);
+    this.visit(node.apiVersion);
     for (let prop of node.properties) {
-      this.visitNode(prop);
+      this.visit(prop);
     }
   }
 
-  protected visitProvidersFunction(node: nodes.ProvidersFunction): void {
-    this.visitNode(node.providerNamespace);
-    this.visitNode(node.resourceType);
+  public visitProvidersFunction(node: nodes.ProvidersFunction): void {
+    this.visit(node.providerNamespace);
+    this.visit(node.resourceType);
     for (let prop of node.properties) {
-      this.visitNode(prop);
+      this.visit(prop);
     }
   }
 
-  protected visitReferenceFunction(node: nodes.ReferenceFunction): void {
-    this.visitNode(node.resourceNameOrId);
-    this.visitNode(node.apiVersion);
+  public visitReferenceFunction(node: nodes.ReferenceFunction): void {
+    this.visit(node.resourceNameOrId);
+    this.visit(node.apiVersion);
     for (let prop of node.properties) {
-      this.visitNode(prop);
+      this.visit(prop);
     }
   }
 
-  protected visitResourceGroupFunction(node: nodes.ResourceGroupFunction): void {
+  public visitResourceGroupFunction(node: nodes.ResourceGroupFunction): void {
     for (let prop of node.properties) {
-      this.visitNode(prop);
+      this.visit(prop);
     }
   }
 
-  protected visitResourceIdFunction(node: nodes.ResourceIdFunction): void {
-    this.visitNode(node.first);
-    this.visitNode(node.second);
+  public visitResourceIdFunction(node: nodes.ResourceIdFunction): void {
+    this.visit(node.first);
+    this.visit(node.second);
     for (let item of node.rest) {
-      this.visitNode(item);
+      this.visit(item);
     }
   }
 
-  protected visitSubscriptionFunction(node: nodes.SubscriptionFunction): void {
+  public visitSubscriptionFunction(node: nodes.SubscriptionFunction): void {
     for (let prop of node.properties) {
-      this.visitNode(prop);
+      this.visit(prop);
     }
   }
 }
