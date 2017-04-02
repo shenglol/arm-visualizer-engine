@@ -24,10 +24,10 @@
   "typings": "./lib/index.d.ts",
   "scripts": {
     "clean": "rimraf lib",
-    "lint": "tslint --force --format verbose \"src/**/*.ts\"",
+    "lint": "tslint --force --format verbose \"src/expression/*.ts\"",
     "build": "tsc --pretty",
     "build:auto": "npm run build -- -w",
-    "test": "mocha --compilers ts:ts-node/register --recursive -c test/**/*.spec.ts",
+    "test": "mocha --compilers ts:ts-node/register --recursive -c test/expression/*.spec.ts",
     "test:auto": "npm run test -- -w",
     "prebuild": "npm run clean",
     "pretest": "npm run build"
